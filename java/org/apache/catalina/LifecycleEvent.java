@@ -21,6 +21,7 @@ import java.util.EventObject;
 /**
  * General event for notifying listeners of significant changes on a component
  * that implements the Lifecycle interface.
+ * 用于将实现生命周期接口的组件上的重大更改通知侦听器的通用事件。
  *
  * @author Craig R. McClanahan
  */
@@ -31,8 +32,10 @@ public final class LifecycleEvent extends EventObject {
 
     /**
      * Construct a new LifecycleEvent with the specified parameters.
+     * 使用指定的参数构造一个新的LifecycleEvent。
      *
      * @param lifecycle Component on which this event occurred
+     *                  事件源，发生此事件的组件
      * @param type Event type (required)
      * @param data Event data (if any)
      */
@@ -45,12 +48,14 @@ public final class LifecycleEvent extends EventObject {
 
     /**
      * The event data associated with this event.
+     * 与此事件关联的事件数据。
      */
     private final Object data;
 
 
     /**
      * The event type this instance represents.
+     * 此实例表示的事件类型。
      */
     private final String type;
 

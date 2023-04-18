@@ -57,6 +57,8 @@ import org.xml.sax.InputSource;
 /**
  * Startup/Shutdown shell program for Catalina.  The following command line
  * options are recognized:
+ * Startup/Shutdown shell程序为卡特琳娜。可以识别以下命令行选项:
+ *
  * <ul>
  * <li><b>-config {pathname}</b> - Set the pathname of the configuration file
  *     to be processed.  If a relative path is specified, it will be
@@ -776,6 +778,7 @@ public class Catalina {
 
     /**
      * Start a new server instance.
+     * 启动一个新的服务器实例。
      */
     public void start() {
 

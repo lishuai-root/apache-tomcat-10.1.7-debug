@@ -28,16 +28,25 @@ import org.apache.catalina.startup.Catalina;
  * the servlet container as a whole.  A <code>Server</code> may contain
  * one or more <code>Services</code>, and the top level set of naming
  * resources.
+ * <code>Server<code>元素表示整个Catalina servlet容器。
+ * 它的属性代表了servlet容器的整体特征。一个<code>Server<code>可以包含一个或多个<code>Services<code>，以及顶级命名资源集。
+ *
  * <p>
  * Normally, an implementation of this interface will also implement
  * <code>Lifecycle</code>, such that when the <code>start()</code> and
  * <code>stop()</code> methods are called, all of the defined
  * <code>Services</code> are also started or stopped.
+ * 通常，这个接口的实现也将实现<code>Lifecycle<code>，这样当<code>start()<code>和<code>stop()<code>方法被调用时，
+ * 所有定义的<code>Services<code>也被启动或停止。
+ *
  * <p>
  * In between, the implementation must open a server socket on the port number
  * specified by the <code>port</code> property.  When a connection is accepted,
  * the first line is read and compared with the specified shutdown command.
  * If the command matches, shutdown of the server is initiated.
+ * 在此期间，实现必须在<code>port<code>属性指定的端口号上打开服务器套接字。
+ * 当接受连接时，读取第一行并与指定的关闭命令进行比较。如果匹配，则启动服务器关机。
+ *
  *
  * @author Craig R. McClanahan
  */

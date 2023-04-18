@@ -28,15 +28,23 @@ import java.util.ResourceBundle;
 /**
  * An internationalization / localization helper class which reduces the bother of handling ResourceBundles and takes
  * care of the common cases of message formatting which otherwise require the creation of Object arrays and such.
+ * 一个国际化本地化助手类，它减少了处理resourceBundle的麻烦，并处理消息格式化的常见情况，否则需要创建Object数组等。
+ *
  * <p>
  * The StringManager operates on a package basis. One StringManager per package can be created and accessed via the
  * getManager method call.
+ * StringManager在包的基础上操作。每个包都可以创建一个StringManager，并通过getManager方法调用进行访问。
+ *
  * <p>
  * The StringManager will look for a ResourceBundle named by the package name given plus the suffix of "LocalStrings".
  * In practice, this means that the localized information will be contained in a LocalStrings.properties file located in
  * the package directory of the class path.
+ * StringManager将查找一个以给定的包名加上后缀“LocalStrings”命名的ResourceBundle。
+ * 实际上，这意味着本地化的信息将包含在localString中。属性文件位于类路径的包目录中。
+ *
  * <p>
  * Please see the documentation for java.util.ResourceBundle for more information.
+ * 有关更多信息，请参阅java.util.ResourceBundle的文档。
  *
  * @author James Duncan Davidson [duncan@eng.sun.com]
  * @author James Todd [gonzo@eng.sun.com]
@@ -144,6 +152,7 @@ public class StringManager {
 
     /**
      * Get a string from the underlying resource bundle and format it with the given set of arguments.
+     * 从底层资源包获取一个字符串，并使用给定的参数集格式化它。
      *
      * @param key  The key for the required message
      * @param args The values to insert into the message
@@ -184,6 +193,9 @@ public class StringManager {
      * located. If a manager for that package already exists, it will be reused, else a new StringManager will be
      * created and returned.
      *
+     * 获取给定类的StringManager。
+     * 该类所在的包将返回StringManager。如果该包的管理器已经存在，它将被重用，否则将创建并返回一个新的StringManager。
+     *
      * @param clazz The class for which to retrieve the StringManager
      *
      * @return The instance associated with the package of the provide class
@@ -209,6 +221,7 @@ public class StringManager {
     /**
      * Get the StringManager for a particular package and Locale. If a manager for a package/Locale combination already
      * exists, it will be reused, else a new StringManager will be created and returned.
+     * 获取特定包和Locale的StringManager。如果package/Locale组合的管理器已经存在，它将被重用，否则将创建并返回一个新的StringManager。
      *
      * @param packageName The package name
      * @param locale      The Locale

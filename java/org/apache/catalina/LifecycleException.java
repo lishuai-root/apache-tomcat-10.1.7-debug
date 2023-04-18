@@ -21,6 +21,7 @@ package org.apache.catalina;
  * General purpose exception that is thrown to indicate a lifecycle related
  * problem.  Such exceptions should generally be considered fatal to the
  * operation of the application containing this component.
+ * 抛出的通用异常，用于指示与生命周期相关的问题。对于包含此组件的应用程序的操作，此类异常通常被认为是致命的。
  *
  * @author Craig R. McClanahan
  */

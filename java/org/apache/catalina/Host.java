@@ -69,8 +69,11 @@ public interface Host extends Container {
     /**
      * @return the XML root for this Host.  This can be an absolute
      * pathname or a relative pathname.
+     * 这个主机的XML根。可以是绝对路径名，也可以是相对路径名。
+     *
      * If null, the base path defaults to
      * ${catalina.base}/conf/&lt;engine name&gt;/&lt;host name&gt; directory
+     * 如果为空，则基本路径默认为${catalina.base}/conf/&lt;engine name&gt;/&lt;host name&gt;目录
      */
     String getXmlBase();
 

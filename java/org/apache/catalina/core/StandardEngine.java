@@ -46,6 +46,7 @@ import org.apache.juli.logging.LogFactory;
 /**
  * Standard implementation of the <b>Engine</b> interface. Each child container must be a Host implementation to process
  * the specific fully qualified host name of that virtual host.
+ * <b>引擎<b>接口的标准实现。每个子容器必须是Host实现，以处理该虚拟主机的特定完全限定主机名。
  *
  * @author Craig R. McClanahan
  */
