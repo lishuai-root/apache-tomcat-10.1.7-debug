@@ -23,13 +23,16 @@ import javax.management.ObjectName;
 
 /**
  * Interface for modeler MBeans.
+ * 建模器mbean的接口。
  *
  * This is the main entry point into modeler. It provides methods to create
  * and manipulate model mbeans and simplify their use.
+ * 这是进入modeler的主要入口点。它提供了创建和操作模型bean并简化其使用的方法。
  *
  * Starting with version 1.1, this is no longer a singleton and the static
  * methods are strongly deprecated. In a container environment we can expect
  * different applications to use different registries.
+ * 从1.1版本开始，这不再是一个单例，并且强烈反对使用静态方法。在容器环境中，我们可以期望不同的应用程序使用不同的注册表。
  *
  * @author Craig R. McClanahan
  * @author Costin Manolache

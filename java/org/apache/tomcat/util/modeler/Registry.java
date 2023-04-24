@@ -54,14 +54,18 @@ import org.apache.tomcat.util.res.StringManager;
 
 /**
  * Registry for modeler MBeans.
+ * 建模器mbean的注册表。
  *
  * This is the main entry point into modeler. It provides methods to create and
  * manipulate model mbeans and simplify their use.
+ * 这是进入modeler的主要入口点。它提供了创建和操作模型bean并简化其使用的方法。
  *
  * This class is itself an mbean.
+ * 这个类本身就是一个bean。
  *
  * IMPORTANT: public methods not marked with {@code @since x.x} are experimental
  * or internal. Should not be used.
+ * 重要:没有标记{@code @since x.x}的公共方法是实验性的或内部的。不宜使用。
  *
  * @author Craig R. McClanahan
  * @author Costin Manolache
@@ -79,6 +83,7 @@ public class Registry implements RegistryMBean, MBeanRegistration {
     /**
      * The registry instance created by our factory method the first time it is
      * called.
+     * 工厂方法在第一次调用时创建的注册表实例。
      */
     private static Registry registry = null;
 
@@ -126,6 +131,7 @@ public class Registry implements RegistryMBean, MBeanRegistration {
     /**
      * Factory method to create (if necessary) and return our
      * <code>Registry</code> instance.
+     * 工厂方法创建(如果需要)并返回我们的<code>注册表<code>实例。
      *
      * @param key Unused
      * @param guard Prevent access to the registry by untrusted components
@@ -466,6 +472,7 @@ public class Registry implements RegistryMBean, MBeanRegistration {
 
     /**
      * Find or load metadata.
+     * 查找或加载元数据。
      *
      * @param bean The bean
      * @param beanClass The bean class
@@ -607,6 +614,7 @@ public class Registry implements RegistryMBean, MBeanRegistration {
 
     /**
      * Register a component
+     * 注册一个组件
      *
      * @param bean The bean
      * @param oname The object name

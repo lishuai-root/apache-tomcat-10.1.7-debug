@@ -100,6 +100,7 @@ public class Catalina {
     // XXX Should be moved to embedded
     /**
      * The shared extensions class loader for this server.
+     * 此服务器的共享扩展类加载器。
      */
     protected ClassLoader parentClassLoader =
         Catalina.class.getClassLoader();
