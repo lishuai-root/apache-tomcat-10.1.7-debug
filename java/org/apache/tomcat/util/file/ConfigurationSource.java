@@ -31,9 +31,12 @@ import org.apache.tomcat.util.buf.UriUtil;
 /**
  * Abstracts configuration file storage. Allows Tomcat embedding using the regular
  * configuration style.
+ * 抽象配置文件存储。允许使用常规配置样式嵌入Tomcat。
+ *
  * This abstraction aims to be very simple and does not cover resource listing,
  * which is usually used for dynamic deployments that are usually not used when
  * embedding, as well as resource writing.
+ * 这个抽象的目的是非常简单，并且不包括资源列表，资源列表通常用于动态部署，通常在嵌入时不会使用，也不包括资源写入。
  */
 public interface ConfigurationSource {
 
@@ -83,6 +86,7 @@ public interface ConfigurationSource {
     /**
      * Represents a resource: a stream to the resource associated with
      * its URI.
+     * 表示资源:指向与其URI相关联的资源的流。
      */
     class Resource implements AutoCloseable {
         private final InputStream inputStream;
@@ -119,6 +123,8 @@ public interface ConfigurationSource {
 
     /**
      * Returns the contents of the main conf/server.xml file.
+     * 返回主conf/server.xml文件的内容。
+     *
      * @return the server.xml as an InputStream
      * @throws IOException if an error occurs or if the resource does not exist
      */
@@ -139,7 +145,11 @@ public interface ConfigurationSource {
     }
 
     /**
+     * 从"tomcat/conf"路径下获取指定资源
+     *
      * Get a resource, based on the conf path.
+     * 根据配置路径获取资源。
+     *
      * @param name The resource name
      * @return the resource as an InputStream
      * @throws IOException if an error occurs or if the resource does not exist

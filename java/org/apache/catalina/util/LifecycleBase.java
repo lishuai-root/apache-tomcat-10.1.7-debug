@@ -83,6 +83,8 @@ public abstract class LifecycleBase implements Lifecycle {
 
 
     /**
+     * 设置组件启动失败时是否退出，默认使用系统默认值
+     *
      * Configure if a {@link LifecycleException} thrown by a sub-class during
      * {@link #initInternal()}, {@link #startInternal()},
      * {@link #stopInternal()} or {@link #destroyInternal()} will be re-thrown

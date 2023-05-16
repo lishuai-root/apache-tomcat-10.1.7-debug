@@ -36,6 +36,9 @@ import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
 
 /**
+ * Tomcat的启动类，使用全局配置启动Tomcat，与{@link Tomcat}不同的是，当前类会启用全局配置文件，
+ * 而{@link Tomcat}支持指定配置文件以实现轻量级启动
+ *
  * Bootstrap loader for Catalina.  This application constructs a class loader
  * for use in loading the Catalina internal classes (by accumulating all of the
  * JAR files found in the "server" directory under "catalina.home"), and
@@ -43,6 +46,13 @@ import org.apache.juli.logging.LogFactory;
  * roundabout approach is to keep the Catalina internal classes (and any
  * other classes they depend on, such as an XML parser) out of the system
  * class path and therefore not visible to application level classes.
+ *
+ * 卡塔琳娜的引导加载器。
+ *
+ * 这个应用程序构造了一个类加载器，用于加载Catalina内部类(通过收集“Catalina.home”下的“server”目录中找到的所有JAR文件)，
+ * 并开始容器的常规执行。这种迂回方法的目的是将Catalina内部类(以及它们所依赖的任何其他类，如XML解析器)排除在系统类路径之外，
+ * 因此对应用程序级类不可见。
+ *
  *
  * @author Craig R. McClanahan
  * @author Remy Maucherat
@@ -53,20 +63,50 @@ public final class Bootstrap {
 
     /**
      * Daemon object used by main.
+     * main使用的守护进程对象。
      */
     private static final Object daemonLock = new Object();
     private static volatile Bootstrap daemon = null;
 
+    /**
+     * 表示基础资源路径
+     */
     private static final File catalinaBaseFile;
+    /**
+     * 表示资源的根路径 默认和{@link #catalinaBaseFile}一致，执行tomcat的安装根路径
+     */
     private static final File catalinaHomeFile;
 
     private static final Pattern PATH_PATTERN = Pattern.compile("(\"[^\"]*\")|(([^,])*)");
 
+    /**
+     * 初始化Catalina的基础资源路径
+     * 设置系统属性{@link Constants#CATALINA_HOME_PROP}和{@link Constants#CATALINA_BASE_PROP}，都指向tomcat安装的根路径
+     * {@link #catalinaBaseFile}和{@link #catalinaHomeFile}都会指向tomcat安装的根路径
+     */
     static {
         // Will always be non-null
+        /**
+         * 获取Tomcat根目录，
+         * 此处使用idea启动源码时，获取的是项目的根目录 E:\All_workspace\IDEA_workspace\apache-tomcat-10.1.7-src
+         * 如果是安装的tomcat，获取的是"Tomcat/bin"目录
+         *
+         * System.getProperty("user.dir")获取到的目录是执行启动命令的目录，获取到的目录会随着执行命令的目录变化而变化
+         * eg：
+         *  假设start.sh脚本在/home/user目录下
+         *  1. 在/home目录下执行 "./user start.sh"，System.getProperty("user.dir")获取到的目录就是"/home"
+         *  2. 在/home/user目录下执行 "start.sh"，System.getProperty("user.dir")获取到的目录就是"/home/user"
+         *  System.getProperty("user.dir")获取到的结果就是执行启动命令时所在的目录，和用户无关
+         *
+         * Tomcat的启动脚本startup.sh中调用了同目录下的catalina.sh脚本执行启动Tomcat的命令，
+         * 因此System.getProperty("user.dir")获取到的目录就是执行catalina.sh脚本时的目录，也就是startup.sh脚本所在目录"Tomcat/bin"
+         */
         String userDir = System.getProperty("user.dir");
 
         // Home first
+        /**
+         * 默认为空
+         */
         String home = System.getProperty(Constants.CATALINA_HOME_PROP);
         File homeFile = null;
 
@@ -82,11 +122,18 @@ public final class Bootstrap {
         if (homeFile == null) {
             // First fall-back. See if current directory is a bin directory
             // in a normal Tomcat install
+            /**
+             * 第一个备用。查看当前目录是否为正常Tomcat安装中的bin目录
+             * Tomcat/bin目录下自带了bootstrap.jar
+             */
             File bootstrapJar = new File(userDir, "bootstrap.jar");
 
             if (bootstrapJar.exists()) {
                 File f = new File(userDir, "..");
                 try {
+                    /**
+                     * homeFile执行Tomcat的安装根目录
+                     */
                     homeFile = f.getCanonicalFile();
                 } catch (IOException ioe) {
                     homeFile = f.getAbsoluteFile();
@@ -96,6 +143,9 @@ public final class Bootstrap {
 
         if (homeFile == null) {
             // Second fall-back. Use current directory
+            /**
+             * 第二个备用。使用当前目录
+             */
             File f = new File(userDir);
             try {
                 homeFile = f.getCanonicalFile();
@@ -104,11 +154,17 @@ public final class Bootstrap {
             }
         }
 
+        /**
+         * 优先指向Tomcat安装的根目录，或者"tomcat/bin"
+         */
         catalinaHomeFile = homeFile;
         System.setProperty(
                 Constants.CATALINA_HOME_PROP, catalinaHomeFile.getPath());
 
         // Then base
+        /**
+         * 默认为空
+         */
         String base = System.getProperty(Constants.CATALINA_BASE_PROP);
         if (base == null) {
             catalinaBaseFile = catalinaHomeFile;
@@ -141,11 +197,20 @@ public final class Bootstrap {
     // -------------------------------------------------------- Private Methods
 
 
+    /**
+     * 根据"conf/catalina.properties"配置文件初始化类加载器
+     * {@link #commonLoader} "conf/catalina.properties"中指定默认加载"Tomcat/lib/*.jar"，没有父类加载器
+     * {@link #catalinaLoader} "conf/catalina.properties"中没有指定要加载的资源路径，默认指向{@link #commonLoader}类加载器
+     * {@link #sharedLoader} "conf/catalina.properties"中没有指定要加载的资源路径，默认指向{@link #commonLoader}类加载器
+     */
     private void initClassLoaders() {
         try {
             commonLoader = createClassLoader("common", null);
             if (commonLoader == null) {
                 // no config file, default to this loader - we might be in a 'single' env.
+                /**
+                 * 没有配置文件，默认是这个加载器——我们可能在一个“单一”的环境中。
+                 */
                 commonLoader = this.getClass().getClassLoader();
             }
             catalinaLoader = createClassLoader("server", commonLoader);
@@ -246,11 +311,14 @@ public final class Bootstrap {
 
 
     /**
-     * Initialize daemon.
+     * Initialize daemon. 初始化守护进程。
      * @throws Exception Fatal initialization error
      */
     public void init() throws Exception {
 
+        /**
+         * 初始化{@link #commonLoader}, {@link #catalinaLoader},  {@link #sharedLoader}类加载器
+         */
         initClassLoaders();
 
         Thread.currentThread().setContextClassLoader(catalinaLoader);
@@ -434,6 +502,7 @@ public final class Bootstrap {
     /**
      * Main method and entry point when starting Tomcat via the provided
      * scripts.
+     * 通过提供的脚本启动Tomcat时的主要方法和入口点。
      *
      * @param args Command line arguments to be processed
      */
@@ -442,6 +511,9 @@ public final class Bootstrap {
         synchronized (daemonLock) {
             if (daemon == null) {
                 // Don't set daemon until init() has completed
+                /**
+                 * 在init()完成之前不要设置守护进程
+                 */
                 Bootstrap bootstrap = new Bootstrap();
                 try {
                     bootstrap.init();
@@ -455,6 +527,9 @@ public final class Bootstrap {
                 // When running as a service the call to stop will be on a new
                 // thread so make sure the correct class loader is used to
                 // prevent a range of class not found exceptions.
+                /**
+                 * 当作为服务运行时，对stop的调用将在一个新线程上，因此请确保使用正确的类装入器来防止一系列类未找到异常。
+                 */
                 Thread.currentThread().setContextClassLoader(daemon.catalinaLoader);
             }
         }
@@ -527,6 +602,8 @@ public final class Bootstrap {
     /**
      * Obtain the configured home (binary) directory. Note that home and
      * base may be the same (and are by default).
+     * 获取配置的主目录(二进制)。请注意，home和base可能是相同的(并且是默认的)。
+     *
      * @return the catalina home as a file
      */
     public static File getCatalinaHomeFile() {
@@ -538,6 +615,8 @@ public final class Bootstrap {
      * Obtain the configured base (instance) directory. Note that
      * home and base may be the same (and are by default). If this is not set
      * the value returned by {@link #getCatalinaHomeFile()} will be used.
+     * 获取配置的基(实例)目录。请注意，home和base可能是相同的(并且是默认的)。如果没有设置，将使用{@link #getCatalinaHomeFile()}返回的值。
+     *
      * @return the catalina base as a file
      */
     public static File getCatalinaBaseFile() {

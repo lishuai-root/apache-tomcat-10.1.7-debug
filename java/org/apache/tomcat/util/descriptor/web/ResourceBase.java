@@ -26,6 +26,7 @@ import java.util.Map;
 
 /**
  * Representation of an Context element
+ * 上下文元素的表示形式
  *
  * @author Peter Rossbach (pero@apache.org)
  */

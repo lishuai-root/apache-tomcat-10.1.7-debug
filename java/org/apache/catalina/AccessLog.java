@@ -25,16 +25,22 @@ import org.apache.catalina.connector.Response;
  * provides access logging. It is used by the Tomcat internals to identify a
  * Valve that logs access requests so requests that are rejected
  * earlier in the processing chain can still be added to the access log.
+ * 由{@link Valve}使用，指示{@link Valve}提供访问日志记录。
+ * Tomcat内部使用它来识别记录访问请求的Valve，以便在处理链中较早被拒绝的请求仍然可以添加到访问日志中。
+ *
  * Implementations of this interface should be robust against the provided
  * {@link Request} and {@link Response} objects being null, having null
  * attributes or any other 'oddness' that may result from attempting to log
  * a request that was almost certainly rejected because it was mal-formed.
+ * 这个接口的实现应该是健壮的，以防止提供的{@link Request}和{@link Response}对象为空，
+ * 具有空属性或任何其他“奇怪”，这些“奇怪”可能是由于试图记录一个几乎肯定会被拒绝的请求，因为它是错误的。
  */
 public interface AccessLog {
 
     /**
      * Name of request attribute used to override the remote address recorded by
      * the AccessLog.
+     * 用于覆盖由AccessLog记录的远程地址的请求属性的名称。
      */
     String REMOTE_ADDR_ATTRIBUTE =
             "org.apache.catalina.AccessLog.RemoteAddr";
@@ -42,6 +48,7 @@ public interface AccessLog {
     /**
      * Name of request attribute used to override remote host name recorded by
      * the AccessLog.
+     * 用于覆盖由AccessLog记录的远程主机名的请求属性的名称。
      */
     String REMOTE_HOST_ATTRIBUTE =
             "org.apache.catalina.AccessLog.RemoteHost";
@@ -84,6 +91,7 @@ public interface AccessLog {
     /**
      * Should this valve use request attributes for IP address, hostname,
      * protocol and port used for the request?
+     * 这个阀门是否应该为请求使用的IP地址、主机名、协议和端口使用请求属性?
      *
      * The attributes used are:
      * <ul>

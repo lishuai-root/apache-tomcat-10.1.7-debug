@@ -72,6 +72,7 @@ public final class UriUtil {
     /**
      * Determine if the character is allowed in the scheme of a URI.
      * See RFC 2396, Section 3.1
+     * 确定在URI的模式中是否允许该字符。参见RFC 2396第3.1节
      *
      * @param c The character to test
      *
@@ -198,8 +199,11 @@ public final class UriUtil {
 
 
     /**
+     * 判断文件路径是否URL
+     *
      * Does the provided path start with <code>file:/</code> or
      * <code>&lt;protocol&gt;://</code>.
+     * 所提供的路径是否以<code>file:/<code>或<code><protocol>://<code>开始?
      *
      * @param path The path to test
      *
@@ -214,17 +218,26 @@ public final class UriUtil {
 
         // Start at the beginning of the path and skip over any valid protocol
         // characters
+        /**
+         * 从路径的开头开始，跳过任何有效的协议字符
+         */
         int i = 0;
         while (i < path.length() && isSchemeChar(path.charAt(i))) {
             i++;
         }
         // Need at least one protocol character. False positives with Windows
         // drives such as C:/... will be caught by the later test for "://"
+        /**
+         * 需要至少一个协议字符。误报Windows驱动器，如C:/...会在后面的测试中被捕获"://"
+         */
         if (i == 0) {
             return false;
         }
         // path starts with something that might be a protocol. Look for a
         // following "://"
+        /**
+         * Path从某种可能是协议的东西开始。查找下面的“://”
+         */
         if (i + 2 < path.length() && path.charAt(i++) == ':' && path.charAt(i++) == '/' && path.charAt(i) == '/') {
             return true;
         }

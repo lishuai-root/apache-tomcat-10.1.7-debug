@@ -17,6 +17,14 @@
 package org.apache.catalina;
 
 /**
+ * Engine:通过域名将请求映射到对应的Host
+ * Engine是请求的处理引擎，负责处理Connector发送过来的请求，并将处理完成的结果返回给Connector，
+ * 一个Engine中可以由多个Host容器，每个Host容器可以通过name属性指定可以处理的请求域名
+ *
+ * Engine中必须要有一个name属性和defaultHost相同的Host
+ *
+ * Engine通过域名匹配处理当前请求的Host主机，如果没有就通过defaultHost属性指定的虚拟主机处理当前请求
+ *
  * An <b>Engine</b> is a Container that represents the entire Catalina servlet
  * engine.  It is useful in the following types of scenarios:
  * <b>引擎<b>是一个容器，它代表了整个Catalina servlet引擎。它在以下类型的场景中很有用:

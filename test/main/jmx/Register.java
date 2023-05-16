@@ -19,6 +19,9 @@ public class Register {
     }
 
     public static void register() throws Exception {
+        /**
+         * 程序启动后可以通过jconsole访问
+         */
         String jmxName = "jxm:type=hello,name=hello_001";
         ObjectName objectName = new ObjectName(jmxName);
         MBeanServer server = ManagementFactory.getPlatformMBeanServer();

@@ -26,6 +26,9 @@ import java.util.Iterator;
  * optionally associated with a set of {@link Group}s through which they inherit
  * additional security roles, and is optionally assigned a set of specific
  * {@link Role}s.
+ * {@link UserDatabase}中用户的抽象表示。每个用户可选地与一组{@link Group}相关联，
+ * 通过这些用户可以继承额外的安全角色，并可选地为其分配一组特定的{@link Role}。
+ *
  *
  * @author Craig R. McClanahan
  * @since 4.1

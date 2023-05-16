@@ -108,6 +108,9 @@ public class SocketProperties {
 
     /**
      * TCP_NO_DELAY option. JVM default used if not set.
+     * TCP_NO_DELAY选项。如果未设置，则使用JVM默认值。
+     *
+     * 禁止小数据报发送延迟(Nagle算法)
      */
     protected Boolean tcpNoDelay = Boolean.TRUE;
 
@@ -129,12 +132,21 @@ public class SocketProperties {
     /**
      * SO_LINGER option, paired with the <code>soLingerTime</code> value.
      * JVM defaults used unless both attributes are set.
+     * SO_LINGER选项，与<code>soLingerTime<code>值配对。使用JVM默认值，除非设置了这两个属性。
+
+     * 该属性和{@link #soLingerTime}同时使用，用于控制在关闭Socket时的行为，调用{@link Socket#close()}时，
+     * 如果{@link #soLingerOn}为true，那个就会等待最多{@link #soLingerTime}秒或者发送完成缓冲区的数据后关闭连接(
+     *      如果{@link #soLingerTime}为0，则会立即关闭连接，未发送完成的数据会被丢弃)，
+     * 如果{@link #soLingerOn}为false，在调用{@link Socket#close()}后，该方法会立刻返回，但是连接不会马上关闭，而是
+     * 等到缓冲区的数据都发送完成后才会管理连接
+     *
      */
     protected Boolean soLingerOn = null;
 
     /**
      * SO_LINGER option, paired with the <code>soLingerOn</code> value.
      * JVM defaults used unless both attributes are set.
+     * SO_LINGER选项，与<code>soLingerOn<code>值配对。使用JVM默认值，除非设置了这两个属性。
      */
     protected Integer soLingerTime = null;
 

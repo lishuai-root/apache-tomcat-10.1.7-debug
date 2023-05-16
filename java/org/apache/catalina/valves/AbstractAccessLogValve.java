@@ -64,8 +64,14 @@ import org.apache.tomcat.util.net.IPv6Utils;
  * <a href="https://httpd.apache.org/">Apache HTTP Server</a> <code>mod_log_config</code> module.
  * </p>
  * <p>
+ *     <b>Valve<b>接口的抽象实现，该接口生成带有匹配可配置模式的详细行内容的web服务器访问日志。
+ *     可用模式的语法类似于<a href="https://httpd.apache.org">Apache HTTP Server<a> <code>mod_log_config<code>模块支持的语法。< p >
+ *
+ * <p>
  * Patterns for the logged message may include constant text or any of the following replacement strings, for which the
  * corresponding information from the specified Response is substituted:
+ * 记录消息的模式可以包括常量文本或以下任何替换字符串，指定响应的相应信息将被替换:
+ *
  * </p>
  * <ul>
  * <li><b><code>%a</code></b> - Remote IP address
@@ -99,6 +105,7 @@ import org.apache.tomcat.util.net.IPv6Utils;
  * </ul>
  * <p>
  * In addition, the caller can specify one of the following aliases for commonly utilized patterns:
+ * 此外，调用者可以为常用模式指定以下别名之一:
  * </p>
  * <ul>
  * <li><b>common</b> - <code>%h %l %u %t "%r" %s %b</code>
@@ -107,7 +114,11 @@ import org.apache.tomcat.util.net.IPv6Utils;
  * <p>
  * There is also support to write information from the cookie, incoming header, the Session or something else in the
  * ServletRequest.<br>
+ * 还支持从cookie、传入头、会话或ServletRequest中的其他内容写入信息。
+ *
  * It is modeled after the <a href="https://httpd.apache.org/">Apache HTTP Server</a> log configuration syntax:
+ * 它是模仿<a href="https://httpd.apache.org">Apache HTTP Server<a>日志配置语法:
+ *
  * </p>
  * <ul>
  * <li><code>%{xxx}i</code> for incoming headers
@@ -126,10 +137,17 @@ import org.apache.tomcat.util.net.IPv6Utils;
  * non-null value, the logging will be skipped. If the value returned from ServletRequest.getAttribute(conditionIf)
  * yields the null value, the logging will be skipped. The <code>condition</code> attribute is synonym for
  * <code>conditionUnless</code> and is provided for backwards compatibility.
+ * 还支持条件日志记录。
+ * 这可以通过<code>conditionUnless<code>和<code>conditionIf<code>属性来完成。
+ * 如果从ServletRequest.getAttribute(conditionUnless)返回的值产生一个非空值，日志记录将被跳过。
+ * 如果ServletRequest.getAttribute(conditionIf)返回的值为空值，则将跳过日志记录。
+ * <code>条件<code>属性是<code>conditionUnless<code>的同义词，是为了向后兼容而提供的。
+ *
  * </p>
  * <p>
  * For extended attributes coming from a getAttribute() call, it is you responsibility to ensure there are no newline or
  * control characters.
+ * 对于来自getAttribute()调用的扩展属性，您有责任确保没有换行符或控制字符。
  * </p>
  *
  * @author Craig R. McClanahan
@@ -144,6 +162,7 @@ public abstract class AbstractAccessLogValve extends ValveBase implements Access
 
     /**
      * The list of our time format types.
+     * 我们的时间格式类型列表。
      */
     private enum FormatType {
         CLF,
@@ -184,11 +203,13 @@ public abstract class AbstractAccessLogValve extends ValveBase implements Access
 
     /**
      * Use IPv6 canonical representation format as defined by RFC 5952.
+     * 使用RFC 5952定义的IPv6规范化表示格式。
      */
     private boolean ipv6Canonical = false;
 
     /**
      * The pattern used to format our access log lines.
+     * 用于格式化访问日志行的模式。
      */
     protected String pattern = null;
 
@@ -205,30 +226,42 @@ public abstract class AbstractAccessLogValve extends ValveBase implements Access
     /**
      * <p>
      * Cache structure for formatted timestamps based on seconds.
+     * 基于秒的格式化时间戳的缓存结构。
+     *
      * </p>
      * <p>
      * The cache consists of entries for a consecutive range of seconds. The length of the range is configurable. It is
      * implemented based on a cyclic buffer. New entries shift the range.
+     * 缓存由连续的秒范围内的条目组成。该范围的长度是可配置的。它是基于循环缓冲区实现的。新条目移动范围。
+     *
      * </p>
      * <p>
      * There is one cache for the CLF format (the access log standard format) and a HashMap of caches for additional
      * formats used by SimpleDateFormat.
+     * 有一个缓存用于CLF格式(访问日志标准格式)，还有一个HashMap缓存用于SimpleDateFormat使用的其他格式。
+     *
      * </p>
      * <p>
      * Although the cache supports specifying a locale when retrieving a formatted timestamp, each format will always
      * use the locale given when the format was first used. New locales can only be used for new formats. The CLF format
      * will always be formatted using the locale <code>en_US</code>.
+     * 尽管缓存支持在检索格式化的时间戳时指定区域设置，但每种格式将始终使用首次使用该格式时给出的区域设置。
+     * 新的区域设置只能用于新的格式。CLF格式将始终使用区域设置<code>en_US<code>进行格式化。
+     *
      * </p>
      * <p>
      * The cache is not threadsafe. It can be used without synchronization via thread local instances, or with
      * synchronization as a global cache.
+     * 缓存不是线程安全的。它可以在不通过线程本地实例进行同步的情况下使用，也可以将同步作为全局缓存使用。
      * </p>
      * <p>
      * The cache can be created with a parent cache to build a cache hierarchy. Access to the parent cache is
      * threadsafe.
+     * 可以与父缓存一起创建缓存，以构建缓存层次结构。访问父缓存是线程安全的。
      * </p>
      * <p>
      * This class uses a small thread local first level cache and a bigger synchronized global second level cache.
+     * 这个类使用一个小的线程本地第一级缓存和一个更大的同步全局第二级缓存。
      * </p>
      */
     protected static class DateFormatCache {

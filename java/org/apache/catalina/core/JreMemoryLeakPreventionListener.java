@@ -32,15 +32,23 @@ import org.apache.tomcat.util.res.StringManager;
 
 /**
  * Provide a workaround for known places where the Java Runtime environment can cause a memory leak or lock files.
+ * 为Java运行时环境可能导致内存泄漏或锁定文件的已知位置提供解决方案。
+ *
  * <p>
  * Memory leaks occur when JRE code uses the context class loader to load a singleton as this will cause a memory leak
  * if a web application class loader happens to be the context class loader at the time. The work-around is to
  * initialise these singletons when Tomcat's common class loader is the context class loader.
+ * 当JRE代码使用上下文类加载器加载单例时，就会发生内存泄漏，因为如果web应用程序类加载器恰好是上下文类加载器，则会导致内存泄漏。
+ * 解决方法是在Tomcat的公共类装入器是上下文类装入器时初始化这些单例。
+ *
  * <p>
  * Locked files usually occur when a resource inside a JAR is accessed without first disabling Jar URL connection
  * caching. The workaround is to disable this caching by default.
+ * 锁定文件通常发生在访问JAR中的资源时没有首先禁用JAR URL连接缓存。解决方法是默认禁用此缓存。
+ *
  * <p>
  * This listener must only be nested within {@link Server} elements.
+ * 此监听器只能嵌套在{@link Server}元素中。
  */
 public class JreMemoryLeakPreventionListener implements LifecycleListener {
 
@@ -51,6 +59,8 @@ public class JreMemoryLeakPreventionListener implements LifecycleListener {
      * Protect against the memory leak caused when the first call to <code>sun.awt.AppContext.getAppContext()</code> is
      * triggered by a web application. Defaults to <code>false</code> since Tomcat code no longer triggers this although
      * application code may.
+     * 防止在web应用程序触发对<code>sun.awt.AppContext.getAppContext()<code>的第一次调用时造成内存泄漏。
+     * 默认为<code>false<code>，因为Tomcat代码不再触发这个，尽管应用程序代码可以。
      */
     private boolean appContextProtection = false;
 
@@ -65,6 +75,8 @@ public class JreMemoryLeakPreventionListener implements LifecycleListener {
     /**
      * Protect against resources being read for JAR files and, as a side-effect, the JAR file becoming locked. Note this
      * disables caching for all {@link URLConnection}s, regardless of type. Defaults to <code>true</code>.
+     * 防止为JAR文件读取资源，作为副作用，JAR文件被锁定。
+     * 注意，这将禁用所有{@link URLConnection}的缓存，无论类型如何。默认为<code>true<code>。
      */
     private boolean urlCacheProtection = true;
 
@@ -80,6 +92,8 @@ public class JreMemoryLeakPreventionListener implements LifecycleListener {
      * The first access to {@link DriverManager} will trigger the loading of all {@link java.sql.Driver}s in the the
      * current class loader. The web application level memory leak protection can take care of this in most cases but
      * triggering the loading here has fewer side-effects.
+     * 第一次访问{@link DriverManager}将触发所有当前类装入器中的{@link java.sql.Driver}的加载。
+     * 在大多数情况下，web应用程序级别的内存泄漏保护可以解决这个问题，但是在这里触发加载的副作用更少。
      */
     private boolean driverManagerProtection = true;
 
@@ -95,6 +109,7 @@ public class JreMemoryLeakPreventionListener implements LifecycleListener {
      * List of comma-separated fully qualified class names to load and initialize during the startup of this Listener.
      * This allows to pre-load classes that are known to provoke classloader leaks if they are loaded during a request
      * processing.
+     * 在此侦听器启动期间要加载和初始化的以逗号分隔的完全限定类名列表。这允许预加载已知会引发类加载器泄漏的类，如果它们是在请求处理期间加载的。
      */
     private String classesToInitialize = null;
 

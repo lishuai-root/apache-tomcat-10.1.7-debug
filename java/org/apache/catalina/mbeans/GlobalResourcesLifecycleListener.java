@@ -43,8 +43,11 @@ import org.apache.tomcat.util.res.StringManager;
  * Implementation of <code>LifecycleListener</code> that instantiates the
  * set of MBeans associated with global JNDI resources that are subject to
  * management.
+ * <code>LifecycleListener<code>的实现，它实例化与受管理的全局JNDI资源相关联的mbean集。
+ *
  * <p>
  * This listener must only be nested within {@link Server} elements.
+ * 此监听器只能嵌套在{@link Server}元素中。
  *
  * @author Craig R. McClanahan
  * @since 4.1

@@ -53,12 +53,15 @@ public final class Constants {
     /**
      * Name of the system property containing
      * the tomcat product installation path
+     *
+     * 包含tomcat产品安装路径的系统属性名称
      */
     public static final String CATALINA_HOME_PROP = "catalina.home";
 
     /**
      * Name of the system property containing
      * the tomcat instance installation path
+     * 包含tomcat实例安装路径的系统属性名称
      */
     public static final String CATALINA_BASE_PROP = "catalina.base";
 }

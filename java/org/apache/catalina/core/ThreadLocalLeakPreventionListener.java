@@ -36,11 +36,16 @@ import org.apache.tomcat.util.threads.ThreadPoolExecutor;
 /**
  * A {@link LifecycleListener} that triggers the renewal of threads in Executor pools when a {@link Context} is being
  * stopped to avoid thread-local related memory leaks.
+ * {@link LifecycleListener}在{@link Context}被停止时触发Executor池中线程的更新，以避免线程本地相关的内存泄漏。
+ *
  * <p>
  * Note : active threads will be renewed one by one when they come back to the pool after executing their task, see
  * {@link org.apache.tomcat.util.threads.ThreadPoolExecutor}.afterExecute().
+ * 注意:活动线程将在执行任务后返回池时逐一更新，参见{@link org.apache.tomcat.util.threads.ThreadPoolExecutor#afterExecute(Runnable, Throwable)}.afterexecute()。
+ *
  * <p>
  * This listener must only be nested within {@link Server} elements.
+ * 此监听器只能嵌套在{@link Server}元素中。
  */
 public class ThreadLocalLeakPreventionListener extends FrameworkListener {
 
@@ -56,6 +61,7 @@ public class ThreadLocalLeakPreventionListener extends FrameworkListener {
     /**
      * Listens for {@link LifecycleEvent} for the start of the {@link Server} to initialize itself and then for
      * after_stop events of each {@link Context}.
+     * 监听{@link LifecycleEvent}的{@link Server}初始化自己的开始，然后监听每个{@link Context}的after_stop事件。
      */
     @Override
     public void lifecycleEvent(LifecycleEvent event) {

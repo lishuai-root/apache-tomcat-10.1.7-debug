@@ -26,6 +26,7 @@ import org.xml.sax.Attributes;
 /**
  * <p>Rule implementation that sets properties on the object at the top of the
  * stack, based on attributes with corresponding names.</p>
+ * <p>基于具有相应名称的属性在堆栈顶部的对象上设置属性的规则实现
  */
 
 public class SetPropertiesRule extends Rule {

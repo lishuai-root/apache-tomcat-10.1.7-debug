@@ -43,6 +43,7 @@ import org.apache.tomcat.util.res.StringManager;
 /**
  * Standard implementation of the <code>Service</code> interface. The associated Container is generally an instance of
  * Engine, but this is not required.
+ * Service<code>接口的标准实现。关联的容器通常是Engine的一个实例，但这不是必需的。
  *
  * @author Craig R. McClanahan
  */

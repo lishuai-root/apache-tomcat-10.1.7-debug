@@ -94,6 +94,7 @@ public class Catalina {
 
     /**
      * Pathname to the server configuration file.
+     * 服务器配置文件的路径名。
      */
     protected String configFile = SERVER_XML;
 
@@ -108,6 +109,9 @@ public class Catalina {
 
     /**
      * The server component we are starting or stopping.
+     * 我们正在启动或停止的服务器组件。
+     *
+     * 解析server.xml时通过反射调用 {@link #setServer(Server)}方法设置值
      */
     protected Server server = null;
 
@@ -132,6 +136,7 @@ public class Catalina {
 
     /**
      * Prevent duplicate loads.
+     * 防止重复加载。
      */
     protected boolean loaded = false;
 
@@ -145,6 +150,7 @@ public class Catalina {
 
     /**
      * Generate Tomcat embedded code from configuration files.
+     * 从配置文件生成Tomcat嵌入代码。
      */
     protected boolean generateCode = false;
 
@@ -169,6 +175,7 @@ public class Catalina {
 
     /**
      * Use generated code as a replacement for configuration files.
+     * 使用生成的代码替代配置文件。
      */
     protected boolean useGeneratedCode = false;
 
@@ -187,7 +194,10 @@ public class Catalina {
         configFile = file;
     }
 
-
+    /**
+     * 获取catalina的配置文件相对路径"conf/server.xml"
+     * @return
+     */
     public String getConfigFile() {
         return configFile;
     }
@@ -277,6 +287,11 @@ public class Catalina {
         return ClassLoader.getSystemClassLoader();
     }
 
+    /**
+     * 解析server.xml时通过反射调用 {@link #setServer(Server)}方法设置值
+     *
+     * @param server
+     */
     public void setServer(Server server) {
         this.server = server;
     }
@@ -373,6 +388,8 @@ public class Catalina {
 
     /**
      * Return a File object representing our configuration file.
+     * 返回一个代表配置文件的File对象。
+     *
      * @return the main configuration file
      */
     protected File configFile() {
@@ -387,7 +404,11 @@ public class Catalina {
 
 
     /**
+     * 创建conf/server.xml配置文件解析器，并设置解析标签时需要的解析规则
+     *
      * Create and configure the Digester we will be using for startup.
+     * 创建并配置我们将用于启动的消化器。
+     *
      * @return the main digester to parse server.xml
      */
     protected Digester createStartDigester() {
@@ -397,14 +418,23 @@ public class Catalina {
         digester.setRulesValidation(true);
         Map<Class<?>, List<String>> fakeAttributes = new HashMap<>();
         // Ignore className on all elements
+        /**
+         * 忽略所有元素上的className
+         */
         List<String> objectAttrs = new ArrayList<>();
         objectAttrs.add("className");
         fakeAttributes.put(Object.class, objectAttrs);
         // Ignore attribute added by Eclipse for its internal tracking
+        /**
+         * 忽略由Eclipse为其内部跟踪添加的属性
+         */
         List<String> contextAttrs = new ArrayList<>();
         contextAttrs.add("source");
         fakeAttributes.put(StandardContext.class, contextAttrs);
         // Ignore Connector attribute used internally but set on Server
+        /**
+         * 忽略在内部使用但在服务器上设置的连接器属性
+         */
         List<String> connectorAttrs = new ArrayList<>();
         connectorAttrs.add("portOffset");
         fakeAttributes.put(Connector.class, connectorAttrs);
@@ -412,6 +442,10 @@ public class Catalina {
         digester.setUseContextClassLoader(true);
 
         // Configure the actions we will be using
+        /**
+         * 配置我们将要使用的操作
+         * 设置配置文件(server.xml)中标签对应的实例类型和子标签调用特定方法时的值传递行为
+         */
         digester.addObjectCreate("Server",
                                  "org.apache.catalina.core.StandardServer",
                                  "className");
@@ -515,6 +549,9 @@ public class Catalina {
                             "org.apache.coyote.UpgradeProtocol");
 
         // Add RuleSets for nested elements
+        /**
+         * 为嵌套元素添加规则集
+         */
         digester.addRuleSet(new NamingRuleSet("Server/GlobalNamingResources/"));
         digester.addRuleSet(new EngineRuleSet("Server/Service/"));
         digester.addRuleSet(new HostRuleSet("Server/Service/Engine/"));
@@ -523,6 +560,9 @@ public class Catalina {
         digester.addRuleSet(new NamingRuleSet("Server/Service/Engine/Host/Context/"));
 
         // When the 'engine' is found, set the parentClassLoader.
+        /**
+         * 当找到“引擎”时，设置parentClassLoader。
+         */
         digester.addRule("Server/Service/Engine",
                          new SetParentClassLoaderRule(parentClassLoader));
         addClusterRuleSet(digester, "Server/Service/Engine/Cluster/");
@@ -533,6 +573,7 @@ public class Catalina {
 
     /**
      * Cluster support is optional. The JARs may have been removed.
+     * 集群支持是可选的。罐子可能被移走了。
      */
     private void addClusterRuleSet(Digester digester, String prefix) {
         Class<?> clazz = null;
@@ -577,8 +618,17 @@ public class Catalina {
     }
 
 
+    /**
+     * 解析conf/server.xml配置文件
+     *
+     * @param start
+     */
     protected void parseServerXml(boolean start) {
         // Set configuration source
+        /**
+         * 设置配置源
+         * 设置Catalina的配置文件，server.xml
+         */
         ConfigFileLoader.setSource(new CatalinaBaseConfigurationSource(Bootstrap.getCatalinaBaseFile(), getConfigFile()));
         File file = configFile();
 
@@ -631,8 +681,14 @@ public class Catalina {
         if (serverXml != null) {
             serverXml.load(this);
         } else {
+            /**
+             * 获取catalina配置文件资源，默认"conf/server.xml"
+             */
             try (ConfigurationSource.Resource resource = ConfigFileLoader.getSource().getServerXml()) {
                 // Create and execute our Digester
+                /**
+                 * 创建并执行我们的消化器
+                 */
                 Digester digester = start ? createStartDigester() : createStopDigester();
                 InputStream inputStream = resource.getInputStream();
                 InputSource inputSource = new InputSource(resource.getURI().toURL().toString());
@@ -718,6 +774,7 @@ public class Catalina {
 
     /**
      * Start a new server instance.
+     * 启动一个新的服务器实例。
      */
     public void load() {
 
@@ -732,6 +789,9 @@ public class Catalina {
         initNaming();
 
         // Parse main server.xml
+        /**
+         * 解析server.xml
+         */
         parseServerXml(true);
         Server s = getServer();
         if (s == null) {
@@ -905,6 +965,9 @@ public class Catalina {
 
     protected void initStreams() {
         // Replace System.out and System.err with a custom PrintStream
+        /**
+         * 替换系统。out和System。错误使用自定义PrintStream
+         */
         System.setOut(new SystemLogHandler(System.out));
         System.setErr(new SystemLogHandler(System.err));
     }
@@ -942,6 +1005,7 @@ public class Catalina {
 
     /**
      * Set the security package access/protection.
+     * 设置安全包access/protection。
      */
     protected void setSecurityProtection(){
         SecurityConfig securityConfig = SecurityConfig.newInstance();
@@ -1035,6 +1099,7 @@ public class Catalina {
     /**
      * Rule that sets the parent class loader for the top object on the stack,
      * which must be a <code>Container</code>.
+     * 为堆栈顶部对象设置父类加载器的规则，该对象必须是<code>容器<code>。
      */
 
     final class SetParentClassLoaderRule extends Rule {

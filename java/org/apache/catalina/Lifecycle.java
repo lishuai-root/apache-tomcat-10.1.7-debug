@@ -18,7 +18,7 @@ package org.apache.catalina;
 
 
 /**
- * 组件生命周期定义接口
+ * 组件生命周期定义接口，定义了组件的生命周期函数和生命周期事件
  *
  * Common interface for component life cycle methods.  Catalina components
  * may implement this interface (as well as the appropriate interface(s) for

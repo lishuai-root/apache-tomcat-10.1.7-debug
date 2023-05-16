@@ -62,8 +62,11 @@ import org.apache.tomcat.util.threads.ThreadPoolExecutor;
 /**
  * @param <S> The type used by the socket wrapper associated with this endpoint.
  *            May be the same as U.
+ *           与此端点关联的套接字包装器使用的类型。可能和美国一样。
+ *
  * @param <U> The type of the underlying socket used by this endpoint. May be
  *            the same as S.
+ *           此端点使用的底层套接字的类型。可能和S一样。
  *
  * @author Mladen Turk
  * @author Remy Maucherat

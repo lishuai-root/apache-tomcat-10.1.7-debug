@@ -33,9 +33,12 @@ import org.apache.tomcat.util.res.StringManager;
 
 /**
  * Logs version information on startup.
+ * 在启动时记录版本信息。
+ *
  * <p>
  * This listener must only be nested within {@link Server} elements and should
  * be the first listener defined.
+ * 这个监听器只能嵌套在{@link Server}元素中，并且应该是第一个定义的监听器。
  */
 public class VersionLoggerListener implements LifecycleListener {
 

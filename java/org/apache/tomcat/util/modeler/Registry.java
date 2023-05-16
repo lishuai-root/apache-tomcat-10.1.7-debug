@@ -151,6 +151,9 @@ public class Registry implements RegistryMBean, MBeanRegistration {
     }
 
 
+    /**
+     * 通过创建{@link NoDescriptorRegistry}实例禁用MBean，{@link NoDescriptorRegistry}中的方法都是空实现
+     */
     public static synchronized void disableRegistry() {
         if (registry == null) {
             registry = new NoDescriptorRegistry();

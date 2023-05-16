@@ -25,6 +25,8 @@ import org.apache.juli.logging.LogFactory;
 /**
  * Util class to protect Catalina against package access and insertion.
  * The code are been moved from Catalina.java
+ * 类来保护Catalina免受包访问和插入。代码已经从catalina.java中移走了
+ *
  * @author the Catalina.java authors
  */
 public final class SecurityConfig{
@@ -50,6 +52,7 @@ public final class SecurityConfig{
                                                 + ",org.apache.jasper.";
     /**
      * List of protected package from conf/catalina.properties
+     * 从conf/catalina.properties的受保护包列表
      */
     private final String packageDefinition;
 
@@ -82,6 +85,8 @@ public final class SecurityConfig{
 
     /**
      * Returns the singleton instance of that class.
+     * 返回该类的单例实例。
+     *
      * @return an instance of that class.
      */
     public static SecurityConfig newInstance(){
@@ -98,6 +103,7 @@ public final class SecurityConfig{
 
     /**
      * Set the security package.access value.
+     * 设置package.access的访问。
      */
     public void setPackageAccess(){
         // If catalina.properties is missing, protect all by default.
@@ -111,9 +117,13 @@ public final class SecurityConfig{
 
     /**
      * Set the security package.definition value.
+     * 设置security package.definition的值。
      */
      public void setPackageDefinition(){
         // If catalina.properties is missing, protect all by default.
+         /**
+          * 如果catalina.properties缺失，默认保护所有属性。
+          */
          if (packageDefinition == null){
             setSecurityProperty("package.definition", PACKAGE_DEFINITION);
          } else {

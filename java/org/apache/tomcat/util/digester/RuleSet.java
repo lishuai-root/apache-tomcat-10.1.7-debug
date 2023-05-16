@@ -40,6 +40,10 @@ public interface RuleSet {
      * our namespace URI (if any).  This method should only be called
      * by a Digester instance.
      *
+     * 将在此RuleSet中定义的规则实例集添加到指定的<code>Digester<code>实例中，
+     * 并将它们与我们的名称空间URI(如果有的话)相关联。此方法只能由消化器实例调用。
+     *
+     *
      * @param digester Digester instance to which the new Rule instances
      *  should be added.
      */

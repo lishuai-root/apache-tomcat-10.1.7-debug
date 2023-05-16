@@ -65,10 +65,16 @@ import org.apache.tomcat.util.net.jsse.JSSESupport;
 
 /**
  * NIO tailored thread pool, providing the following services:
+ * NIO定制线程池，提供以下服务:
  * <ul>
  * <li>Socket acceptor thread</li>
+ * 套接字接收线程
+ *
  * <li>Socket poller thread</li>
+ * 套接字轮询线程
+ *
  * <li>Worker threads pool</li>
+ * 工作线程池
  * </ul>
  *
  * TODO: Consider using the virtual machine's thread pool.
@@ -98,6 +104,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
 
     /**
      * Stop latch used to wait for poller stop
+     * 停止闩锁用于等待轮询器停止
      */
     private volatile CountDownLatch stopLatch = null;
 
@@ -108,6 +115,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
 
     /**
      * Bytebuffer cache, each channel holds a set of buffers (two, except for SSL holds four)
+     * 字节缓冲区缓存，每个通道持有一组缓冲区(两个，SSL除外持有四个)
      */
     private SynchronizedStack<NioChannel> nioChannels;
 
@@ -119,6 +127,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
 
     /**
      * Use System.inheritableChannel to obtain channel from stdin/stdout.
+     * 使用System.inheritableChannel从stdin/stdout获取信道。
      */
     private boolean useInheritedChannel = false;
     public void setUseInheritedChannel(boolean useInheritedChannel) { this.useInheritedChannel = useInheritedChannel; }
@@ -127,6 +136,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
 
     /**
      * Path for the Unix domain socket, used to create the socket address.
+     * Unix域套接字的路径，用于创建套接字地址。
      */
     private String unixDomainSocketPath = null;
     public String getUnixDomainSocketPath() { return this.unixDomainSocketPath; }
@@ -137,6 +147,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
 
     /**
      * Permissions which will be set on the Unix domain socket if it is created.
+     * 如果创建了Unix域套接字，将在其上设置的权限。
      */
     private String unixDomainSocketPathPermissions = null;
     public String getUnixDomainSocketPathPermissions() { return this.unixDomainSocketPathPermissions; }
@@ -739,6 +750,8 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
          * The background thread that adds sockets to the Poller, checks the
          * poller for triggered events and hands the associated socket off to an
          * appropriate processor as events occur.
+         *
+         * 将套接字添加到轮询器的后台线程，检查轮询器是否触发了事件，并在事件发生时将相关的套接字交给适当的处理器。
          */
         @Override
         public void run() {

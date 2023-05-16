@@ -20,10 +20,16 @@ import org.apache.tomcat.util.digester.Digester;
 import org.apache.tomcat.util.digester.RuleSet;
 
 /**
+ * 定义了解析<Engine/>引擎标签时需要的规则集合
+ *
  * <p><strong>RuleSet</strong> for processing the contents of a
  * Engine definition element.  This <code>RuleSet</code> does NOT include
  * any rules for nested Host elements, which should be added via instances of
  * <code>HostRuleSet</code>.</p>
+ *
+ * <p><strong>RuleSet<strong>用于处理引擎定义元素的内容。这个<code>规则集<code>不包含任何嵌套Host元素的规则，
+ * 这些规则应该通过<code>HostRuleSet<code>的实例来添加。
+ *
  *
  * @author Craig R. McClanahan
  */
@@ -51,6 +57,7 @@ public class EngineRuleSet implements RuleSet {
     /**
      * Construct an instance of this <code>RuleSet</code> with the specified
      * matching pattern prefix.
+     * 用指定的匹配模式前缀构造这个<code>RuleSet<code>的实例。
      *
      * @param prefix Prefix for matching pattern rules (including the
      *  trailing slash character)
@@ -67,6 +74,9 @@ public class EngineRuleSet implements RuleSet {
      * specified <code>Digester</code> instance, associating them with
      * our namespace URI (if any).  This method should only be called
      * by a Digester instance.</p>
+     *
+     * <p>将在此RuleSet中定义的规则实例集添加到指定的<code>Digester<code>实例中，并将它们与我们的命名空间URI(如果有的话)相关联。
+     * 此方法只能由消化器实例调用。<p>
      *
      * @param digester Digester instance to which the new Rule instances
      *  should be added.

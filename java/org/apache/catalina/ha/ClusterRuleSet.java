@@ -20,8 +20,11 @@ import org.apache.tomcat.util.digester.Digester;
 import org.apache.tomcat.util.digester.RuleSet;
 
 /**
+ * 定义了解析<Manager/>集群标签时需要的规则集合
+ *
  * <p><strong>RuleSet</strong> for processing the contents of a
  * Cluster definition element.  </p>
+ * <p><strong>RuleSet<strong>用于处理集群定义元素的内容。< p >
  *
  * @author Peter Rossbach
  */
@@ -69,6 +72,9 @@ public class ClusterRuleSet implements RuleSet {
      * specified <code>Digester</code> instance, associating them with
      * our namespace URI (if any).  This method should only be called
      * by a Digester instance.</p>
+
+     * <p>将在此RuleSet中定义的规则实例集添加到指定的<code>Digester<code>实例中，
+     * 并将它们与我们的命名空间URI(如果有的话)相关联。此方法只能由消化器实例调用。<p>
      *
      * @param digester Digester instance to which the new Rule instances
      *  should be added.

@@ -24,6 +24,7 @@ import org.xml.sax.Attributes;
 
 /**
  * Rule implementation that creates an SSLHostConfigCertificate.
+ * 创建SSLHostConfigCertificate的规则实现。
  */
 public class CertificateCreateRule extends Rule {
 

@@ -41,19 +41,39 @@ import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
 import org.apache.tomcat.util.http.CookieProcessor;
 
 /**
+ * Context代表Host下面的一个虚拟目录，即单个web应用。
+ *
+ * <Context path="test" docBase="D:/test" debug="0" reloadable="true" crossContext="true"/>
+ * server.xml中默认不配置Context容器
+ *
+ * path: 此web应用程序的上下文路径
+ * docBase: 应用程序的路径或者是WAR文件存放的路径
+ * reloadable: 是否支持热部署，如果设置为true，tomcat在运行期间会监测发布应用的WEB-INF/classes和WEB-INF/lib目录中的文件改动，
+ * 当检测到文件变动后，tomcat会自动重新加载应用。以实现在不重启tomcat的情况下重新部署。
+ * crossContext: 不同context是否共享session
+ *
  * A <b>Context</b> is a Container that represents a servlet context, and
  * therefore an individual web application, in the Catalina servlet engine.
+ * A <b>Context<b>是一个容器，它代表一个servlet上下文，因此是一个单独的web应用程序，在Catalina servlet引擎中。
+ *
  * It is therefore useful in almost every deployment of Catalina (even if a
  * Connector attached to a web server (such as Apache) uses the web server's
  * facilities to identify the appropriate Wrapper to handle this request.
+ * 因此，它在几乎所有的Catalina部署中都很有用(即使连接到web服务器(如Apache)的连接器使用web服务器的功能来识别适当的包装器来处理此请求)。
+ *
  * It also provides a convenient mechanism to use Interceptors that see
  * every request processed by this particular web application.
+ * 它还提供了一种方便的机制来使用拦截器来查看这个特定web应用程序处理的每个请求。
+ *
  * <p>
  * The parent Container attached to a Context is generally a Host, but may
  * be some other implementation, or may be omitted if it is not necessary.
+ * 附加到上下文的父容器通常是一个Host，但也可以是其他实现，或者如果没有必要可以省略。
+ *
  * <p>
  * The child containers attached to a Context are generally implementations
  * of Wrapper (representing individual servlet definitions).
+ * 附加到上下文的子容器通常是Wrapper的实现(表示单个servlet定义)。
  * <p>
  *
  * @author Craig R. McClanahan

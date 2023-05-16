@@ -24,6 +24,7 @@ import java.util.jar.Manifest;
 /**
  * Represents a file or directory within a web application. It borrows heavily
  * from {@link java.io.File}.
+ * 表示web应用程序中的文件或目录。它大量借用了{@link java.io.File}。
  */
 public interface WebResource {
     /**

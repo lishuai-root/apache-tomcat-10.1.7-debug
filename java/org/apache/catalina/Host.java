@@ -22,24 +22,39 @@ import java.util.regex.Pattern;
 
 
 /**
+ * Host表示虚拟主机，一个Host实例表示一个虚拟主机，Host用来处理对应域名的请求，一个Host可以对应一个或多个域名
+ * Host可以通过<Alias></Alias>标签定义别名，别名的作用和域名相同
+ *
  * A <b>Host</b> is a Container that represents a virtual host in the
  * Catalina servlet engine.  It is useful in the following types of scenarios:
+ * A <b>Host<b>是一个容器，表示Catalina servlet引擎中的虚拟主机。它在以下类型的场景中很有用:
+ *
  * <ul>
  * <li>You wish to use Interceptors that see every single request processed
  *     by this particular virtual host.
+ *     您希望使用拦截器来查看该特定虚拟主机处理的每个请求。
+ *
  * <li>You wish to run Catalina in with a standalone HTTP connector, but still
  *     want support for multiple virtual hosts.
+ *     您希望使用独立的HTTP连接器运行Catalina，但仍然希望支持多个虚拟主机。
+ *
  * </ul>
  * In general, you would not use a Host when deploying Catalina connected
  * to a web server (such as Apache), because the Connector will have
  * utilized the web server's facilities to determine which Context (or
  * perhaps even which Wrapper) should be utilized to process this request.
+ * 一般来说，当部署连接到web服务器(如Apache)的Catalina时，您不会使用Host，
+ * 因为Connector将利用web服务器的设施来确定应该使用哪个上下文(甚至可能是哪个Wrapper)来处理此请求。
+ *
  * <p>
  * The parent Container attached to a Host is generally an Engine, but may
  * be some other implementation, or may be omitted if it is not necessary.
+ * 附加到主机上的父容器通常是一个引擎，但也可能是其他实现，或者在没有必要的情况下可以省略。
+ *
  * <p>
  * The child containers attached to a Host are generally implementations
  * of Context (representing an individual servlet context).
+ * 附加到Host的子容器通常是Context的实现(表示单个servlet上下文)。
  *
  * @author Craig R. McClanahan
  */
@@ -52,6 +67,7 @@ public interface Host extends Container {
     /**
      * The ContainerEvent event type sent when a new alias is added
      * by <code>addAlias()</code>.
+     * 当<code>addAlias()<code>添加新别名时发送的ContainerEvent事件类型。
      */
     String ADD_ALIAS_EVENT = "addAlias";
 
@@ -59,6 +75,7 @@ public interface Host extends Container {
     /**
      * The ContainerEvent event type sent when an old alias is removed
      * by <code>removeAlias()</code>.
+     * 当<code>removeAlias()<code>删除旧别名时发送的ContainerEvent事件类型。
      */
     String REMOVE_ALIAS_EVENT = "removeAlias";
 
@@ -80,8 +97,12 @@ public interface Host extends Container {
     /**
      * Set the Xml root for this Host.  This can be an absolute
      * pathname or a relative pathname.
+     * 为这个主机设置Xml根目录。可以是绝对路径名，也可以是相对路径名。
+     *
      * If null, the base path defaults to
      * ${catalina.base}/conf/&lt;engine name&gt;/&lt;host name&gt; directory
+     * 如果为空，则基本路径默认为{catalina.base}引擎名&gt;&lt;主机名&gt;目录
+     *
      * @param xmlBase The new XML root
      */
     void setXmlBase(String xmlBase);
@@ -89,12 +110,14 @@ public interface Host extends Container {
     /**
      * @return a default configuration path of this Host. The file will be
      * canonical if possible.
+     * 该主机的默认配置路径。如果可能的话，该文件将是规范的。
      */
     File getConfigBaseFile();
 
     /**
      * @return the application root for this Host.  This can be an absolute
      * pathname, a relative pathname, or a URL.
+     * 该主机的应用程序根目录。它可以是绝对路径名、相对路径名或URL。
      */
     String getAppBase();
 

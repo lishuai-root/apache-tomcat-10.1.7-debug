@@ -61,6 +61,7 @@ import org.apache.tomcat.util.threads.TaskThreadFactory;
 /**
  * Standard implementation of the <b>Server</b> interface, available for use (but not required) when deploying and
  * starting Catalina.
+ * <b>Server<b>接口的标准实现，可在部署和启动Catalina时使用(但不是必需的)。
  *
  * @author Craig R. McClanahan
  */
@@ -135,6 +136,7 @@ public final class StandardServer extends LifecycleMBeanBase implements Server {
 
     /**
      * The set of Services associated with this Server.
+     * 与此服务器关联的服务集。
      */
     private Service services[] = new Service[0];
     private final Object servicesLock = new Object();
@@ -974,6 +976,7 @@ public final class StandardServer extends LifecycleMBeanBase implements Server {
     /**
      * Invoke a pre-startup initialization. This is used to allow connectors to bind to restricted ports under Unix
      * operating environments.
+     * 调用启动前初始化。这用于允许连接器绑定到Unix操作环境下的受限端口。
      */
     @Override
     protected void initInternal() throws LifecycleException {

@@ -20,8 +20,12 @@ import org.apache.tomcat.util.digester.Digester;
 import org.apache.tomcat.util.digester.RuleSet;
 
 /**
+ * 定义了解析<GlobalNamingResources/>资源标签时需要的规则集合
+ *
  * <p><strong>RuleSet</strong> for processing the JNDI Enterprise Naming
  * Context resource declaration elements.</p>
+ *
+ * <p><strong>RuleSet<strong>用于处理JNDI企业命名上下文资源声明元素。
  *
  * @author Craig R. McClanahan
  * @author Remy Maucherat
@@ -32,6 +36,7 @@ public class NamingRuleSet implements RuleSet {
 
     /**
      * The matching pattern prefix to use for recognizing our elements.
+     * 用于识别元素的匹配模式前缀。
      */
     protected final String prefix;
 

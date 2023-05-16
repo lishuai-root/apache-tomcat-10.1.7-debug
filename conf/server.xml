@@ -68,6 +68,9 @@
     <Connector port="8090" protocol="HTTP/1.1"
                connectionTimeout="20000"
                redirectPort="8443" />
+    <Connector port="8091" protocol="HTTP/1.1"
+               connectionTimeout="20000"
+               redirectPort="8443" />
     <!-- A "Connector" using the shared thread pool-->
     <!--
     <Connector executor="tomcatThreadPool"
@@ -130,6 +133,11 @@
                resourceName="UserDatabase"/>
       </Realm>
 
+      <!--
+        appBase:指定虚拟主机的对应的目录（即虚拟主机的部署目录）
+        unpackWARs: 配置为true，表示tomcat会自动解压部署目录中的war包，如果配置为false，则不会解压，直接运行war文件，默认为false，建议保持默认值。
+        autoDeploy:配置为true，表示tomcat处于运行状态时可以监测部署目录中的文件状态，如果有新的web应用部署进来则自动发布这个web应用。
+      -->
       <Host name="localhost"  appBase="webapps"
             unpackWARs="true" autoDeploy="true">
 

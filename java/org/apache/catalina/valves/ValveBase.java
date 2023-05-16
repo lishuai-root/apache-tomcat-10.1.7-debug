@@ -31,6 +31,9 @@ import org.apache.tomcat.util.res.StringManager;
  * Convenience base class for implementations of the <b>Valve</b> interface. A subclass <strong>MUST</strong> implement
  * an <code>invoke()</code> method to provide the required functionality, and <strong>MAY</strong> implement the
  * <code>Lifecycle</code> interface to provide configuration management and lifecycle support.
+ * 实现<b>Valve<b>接口的便利基类。
+ * 子类<strong>必须<strong>实现<code>invoke()<code>方法来提供所需的功能，
+ * 而<strong>可以<strong>实现<code>Lifecycle<code>接口来提供配置管理和生命周期支持。
  *
  * @author Craig R. McClanahan
  */

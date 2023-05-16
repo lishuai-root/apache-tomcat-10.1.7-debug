@@ -23,6 +23,7 @@ import java.util.Set;
 /**
  * Represents a set of resources that are part of a web application. Examples
  * include a directory structure, a resources JAR and a WAR file.
+ * 表示作为web应用程序一部分的一组资源。示例包括一个目录结构、一个资源JAR和一个WAR文件。
  */
 public interface WebResourceSet extends Lifecycle {
     /**

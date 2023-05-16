@@ -21,7 +21,7 @@ import org.apache.juli.logging.LogFactory;
 
 /**
  * A Thread implementation that records the time at which it was created.
- *
+ * 记录创建时间的线程实现。
  */
 public class TaskThread extends Thread {
 

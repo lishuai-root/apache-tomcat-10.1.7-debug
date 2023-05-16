@@ -55,7 +55,9 @@ public class CatalinaProperties {
 
 
     /**
-     * Load properties.
+     * Load properties. 负载特性。
+     *
+     * 加载"conf/catalina.properties"配置文件，该配置文件中制定了Catalina启动和类加载时的信息
      */
     private static void loadProperties() {
 

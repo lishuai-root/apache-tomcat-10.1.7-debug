@@ -64,6 +64,9 @@ public class ExceptionUtils {
      * the class is used extensively in error handling, it is prudent to
      * pre-load it to avoid any failure to load this class masking the true
      * problem during error handling.
+     * 提供的NO-OP方法可以简单地预加载这个类。由于这个类在错误处理中被广泛使用，因此预先加载它是谨慎的做法，
+     * 以避免在错误处理期间加载这个类的任何失败，从而掩盖了真正的问题。
+     *
      */
     public static void preload() {
         // NO-OP

@@ -32,7 +32,10 @@ import org.xml.sax.Attributes;
 
 
 /**
+ * 解析conf/server.xml的<Connector/>标签前创建{@link Connector}实例
+ *
  * Rule implementation that creates a connector.
+ * 创建连接器的规则实现。
  */
 
 public class ConnectorCreateRule extends Rule {
@@ -44,6 +47,7 @@ public class ConnectorCreateRule extends Rule {
 
     /**
      * Process the beginning of this element.
+     * 处理这个元素的开头。
      *
      * @param namespace the namespace URI of the matching element, or an
      *   empty string if the parser is not namespace aware or the element has

@@ -22,6 +22,8 @@ import org.xml.sax.Attributes;
 /**
  * Concrete implementations of this class implement actions to be taken when
  * a corresponding nested pattern of XML elements has been matched.
+
+ * 该类的具体实现实现了在匹配相应的XML元素嵌套模式时所采取的操作。
  */
 public abstract class Rule {
 
@@ -47,6 +49,7 @@ public abstract class Rule {
 
     /**
      * The namespace URI for which this Rule is relevant, if any.
+     * 与此规则相关的名称空间URI(如果有的话)。
      */
     protected String namespaceURI = null;
 
@@ -66,6 +69,7 @@ public abstract class Rule {
     /**
      * Set the <code>Digester</code> with which this <code>Rule</code> is
      * associated.
+     * 设置与该<code>规则<code>相关联的<code>消化器<code>。
      *
      * @param digester The digester with which to associate this rule
      */
@@ -101,6 +105,7 @@ public abstract class Rule {
     /**
      * This method is called when the beginning of a matching XML element
      * is encountered. The default implementation is a NO-OP.
+     * 当遇到匹配的XML元素的开头时调用此方法。默认实现是NO-OP。
      *
      * @param namespace the namespace URI of the matching element, or an
      *                  empty string if the parser is not namespace aware or the
@@ -120,6 +125,7 @@ public abstract class Rule {
      * This method is called when the body of a matching XML element is
      * encountered.  If the element has no body, this method is not called at
      * all. The default implementation is a NO-OP.
+     * 当遇到匹配的XML元素体时调用此方法。如果元素没有主体，则根本不调用此方法。默认实现是NO-OP。
      *
      * @param namespace the namespace URI of the matching element, or an empty
      *                  string if the parser is not namespace aware or the
@@ -138,6 +144,7 @@ public abstract class Rule {
     /**
      * This method is called when the end of a matching XML element
      * is encountered. The default implementation is a NO-OP.
+     * 当遇到匹配的XML元素结束时调用此方法。默认实现是NO-OP。
      *
      * @param namespace the namespace URI of the matching element, or an empty
      *                  string if the parser is not namespace aware or the
@@ -155,6 +162,7 @@ public abstract class Rule {
     /**
      * This method is called after all parsing methods have been
      * called, to allow Rules to remove temporary data.
+     * 在调用所有解析方法之后调用此方法，以允许Rules删除临时数据。
      *
      * @throws Exception if an error occurs while processing the event
      */

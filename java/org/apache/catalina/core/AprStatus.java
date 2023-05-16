@@ -18,6 +18,7 @@ package org.apache.catalina.core;
 
 /**
  * Holds APR status without the need to load other classes.
+ * 保持APR状态，而不需要加载其他类。
  */
 public class AprStatus {
     private static volatile boolean aprInitialized = false;

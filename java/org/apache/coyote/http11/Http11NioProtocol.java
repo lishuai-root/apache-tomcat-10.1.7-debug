@@ -24,6 +24,7 @@ import org.apache.tomcat.util.net.NioEndpoint;
 
 /**
  * HTTP/1.1 protocol implementation using NIO.
+ * 使用NIO实现HTTP1.1协议。
  */
 public class Http11NioProtocol extends AbstractHttp11JsseProtocol<NioChannel> {
 

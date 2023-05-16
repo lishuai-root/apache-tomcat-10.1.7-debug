@@ -33,6 +33,9 @@ import org.apache.catalina.Service;
 /**
  * This listener must be declared in server.xml as a Server listener, possibly optional. It will register a lifecycle
  * listener on all contexts. This is an alternative to adding a Listener in context.xml with more flexibility.
+ *
+ * 这个监听器必须在Server.xml中声明为Server监听器，可能是可选的。
+ * 它将在所有上下文中注册一个生命周期侦听器。这是在context.xml中添加侦听器的一种更灵活的替代方法。
  */
 public abstract class FrameworkListener implements LifecycleListener, ContainerListener {
 

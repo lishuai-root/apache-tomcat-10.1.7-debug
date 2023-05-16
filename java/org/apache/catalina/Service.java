@@ -20,6 +20,13 @@ import org.apache.catalina.connector.Connector;
 import org.apache.catalina.mapper.Mapper;
 
 /**
+ * service组件包含了请求处理的所有容器，一个service可以包含多个Connector和一个Engine，
+ * 每个Connector都会监听一个TCP端口，可以通过配置多个Connector实现一个tomcat应用监听并处理多个不同端口的请求
+ *
+ * service中可以在server.xml中配置所有Connector的共享线程池(Executor)，默认不开启
+ *
+ * service将多个连接器与容器实例联系起来，使得不同协议的请求可以使用同一个容器来处理。
+ *
  * A <strong>Service</strong> is a group of one or more
  * <strong>Connectors</strong> that share a single <strong>Container</strong>
  * to process their incoming requests.  This arrangement allows, for example,

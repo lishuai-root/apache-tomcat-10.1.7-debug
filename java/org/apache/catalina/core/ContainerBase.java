@@ -70,15 +70,23 @@ import org.apache.tomcat.util.threads.InlineExecutorService;
 /**
  * Abstract implementation of the <b>Container</b> interface, providing common functionality required by nearly every
  * implementation. Classes extending this base class must may implement a replacement for <code>invoke()</code>.
+ * <b>容器<b>接口的抽象实现，提供几乎所有实现所需的通用功能。扩展此基类的类必须实现<code>invoke()<code>的替换。
+ *
  * <p>
  * All subclasses of this abstract base class will include support for a Pipeline object that defines the processing to
  * be performed for each request received by the <code>invoke()</code> method of this class, utilizing the "Chain of
  * Responsibility" design pattern. A subclass should encapsulate its own processing functionality as a
  * <code>Valve</code>, and configure this Valve into the pipeline by calling <code>setBasic()</code>.
+ * 这个抽象基类的所有子类都将包括对Pipeline对象的支持，该对象利用“责任链”设计模式，定义对该类的<code>invoke()<code>方法接收的每个请求执行的处理。
+ * 子类应该将自己的处理功能封装为<code>Valve<code>，并通过调用<code>setBasic()<code>将该Valve配置到管道中。
+ *
  * <p>
  * This implementation fires property change events, per the JavaBeans design pattern, for changes in singleton
  * properties. In addition, it fires the following <code>ContainerEvent</code> events to listeners who register
  * themselves with <code>addContainerListener()</code>:
+ * 该实现根据JavaBeans设计模式，为单例属性的更改触发属性更改事件。
+ * 此外，它还向通过<code>addContainerListener()<code>注册自己的侦听器触发以下<code>ContainerEvent<code>事件:
+ *
  * <table border=1>
  * <caption>ContainerEvents fired by this implementation</caption>
  * <tr>
@@ -118,6 +126,7 @@ import org.apache.tomcat.util.threads.InlineExecutorService;
  * </tr>
  * </table>
  * Subclasses that fire additional events should document them in the class comments of the implementation class.
+ * 触发额外事件的子类应该在实现类的类注释中记录它们。
  *
  * @author Craig R. McClanahan
  */
@@ -128,6 +137,7 @@ public abstract class ContainerBase extends LifecycleMBeanBase implements Contai
     /**
      * Perform addChild with the permissions of this class. addChild can be called with the XML parser on the stack,
      * this allows the XML parser to have fewer privileges than Tomcat.
+     * 使用该类的权限执行addChild。addChild可以用堆栈上的XML解析器调用，这允许XML解析器拥有比Tomcat更少的特权。
      */
     protected class PrivilegedAddChild implements PrivilegedAction<Void> {
 
@@ -150,18 +160,21 @@ public abstract class ContainerBase extends LifecycleMBeanBase implements Contai
 
     /**
      * The child Containers belonging to this Container, keyed by name.
+     * 属于此容器的子容器，按名称键入。
      */
     protected final HashMap<String, Container> children = new HashMap<>();
 
 
     /**
      * The processor delay for this component.
+     * 该组件的处理器延迟。
      */
     protected int backgroundProcessorDelay = -1;
 
 
     /**
      * The future allowing control of the background processor.
+     * 未来允许控制后台处理器。
      */
     protected ScheduledFuture<?> backgroundProcessorFuture;
     protected ScheduledFuture<?> monitorFuture;
@@ -170,6 +183,8 @@ public abstract class ContainerBase extends LifecycleMBeanBase implements Contai
      * The container event listeners for this Container. Implemented as a CopyOnWriteArrayList since listeners may
      * invoke methods to add/remove themselves or other listeners and with a ReadWriteLock that would trigger a
      * deadlock.
+     * 此容器的容器事件侦听器。
+     * 作为CopyOnWriteArrayList实现，因为侦听器可以调用方法来定位自己或其他侦听器，并带有一个ReadWriteLock，这会触发死锁。
      */
     protected final List<ContainerListener> listeners = new CopyOnWriteArrayList<>();
 
@@ -181,12 +196,14 @@ public abstract class ContainerBase extends LifecycleMBeanBase implements Contai
 
     /**
      * Associated logger name.
+     * 关联的记录器名称。
      */
     protected String logName = null;
 
 
     /**
      * The cluster with which this Container is associated.
+     * 与此容器相关联的集群。
      */
     protected Cluster cluster = null;
     private final ReadWriteLock clusterLock = new ReentrantReadWriteLock();
@@ -200,47 +217,55 @@ public abstract class ContainerBase extends LifecycleMBeanBase implements Contai
 
     /**
      * The parent Container to which this Container is a child.
+     * 父容器，此容器是其子容器。
      */
     protected Container parent = null;
 
 
     /**
      * The parent class loader to be configured when we install a Loader.
+     * 安装loader时要配置的父类加载器。
      */
     protected ClassLoader parentClassLoader = null;
 
 
     /**
      * The Pipeline object with which this Container is associated.
+     * 与此容器相关联的管道对象。
      */
     protected final Pipeline pipeline = new StandardPipeline(this);
 
 
     /**
      * The Realm with which this Container is associated.
+     * 与此容器相关联的领域。
      */
     private volatile Realm realm = null;
 
 
     /**
      * Lock used to control access to the Realm.
+     * 用于控制进入Realm的锁。
      */
     private final ReadWriteLock realmLock = new ReentrantReadWriteLock();
 
 
     /**
      * The string manager for this package.
+     * 此包的字符串管理器。
      */
     protected static final StringManager sm = StringManager.getManager(ContainerBase.class);
 
 
     /**
      * Will children be started automatically when they are added.
+     * 添加子节点时是否会自动启动。
      */
     protected boolean startChildren = true;
 
     /**
      * The property change support for this component.
+     * 此组件的属性更改支持。
      */
     protected final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
@@ -248,6 +273,7 @@ public abstract class ContainerBase extends LifecycleMBeanBase implements Contai
     /**
      * The access log to use for requests normally handled by this container that have been handled earlier in the
      * processing chain.
+     * 要用于通常由此容器处理的请求的访问日志，这些请求已在处理链的早期处理过。
      */
     protected volatile AccessLog accessLog = null;
     private volatile boolean accessLogScanComplete = false;
@@ -255,6 +281,7 @@ public abstract class ContainerBase extends LifecycleMBeanBase implements Contai
 
     /**
      * The number of threads available to process start and stop events for any children associated with this container.
+     * 可用于处理与此容器关联的任何子节点的启动和停止事件的线程数。
      */
     private int startStopThreads = 1;
     protected ExecutorService startStopExecutor;
@@ -273,6 +300,9 @@ public abstract class ContainerBase extends LifecycleMBeanBase implements Contai
         this.startStopThreads = startStopThreads;
 
         // Use local copies to ensure thread safety
+        /**
+         * 使用本地副本以确保线程安全
+         */
         if (oldStartStopThreads != startStopThreads && startStopExecutor != null) {
             reconfigureStartStopExecutor(getStartStopThreads());
         }
@@ -284,6 +314,10 @@ public abstract class ContainerBase extends LifecycleMBeanBase implements Contai
      * containers will not be invoked if their delay value is not negative (which would mean they are using their own
      * thread). Setting this to a positive value will cause a thread to be spawn. After waiting the specified amount of
      * time, the thread will invoke the executePeriodic method on this container and all its children.
+     *
+     * 获取在此容器上调用backgroundProcess方法与其子容器之间的延迟。如果子容器的延迟值不为负(这意味着它们正在使用自己的线程)，
+     * 则不会调用子容器。将其设置为正值将导致生成一个线程。等待指定的时间后，线程将调用此容器及其所有子容器上的executePeriodic方法。
+     *
      */
     @Override
     public int getBackgroundProcessorDelay() {
@@ -293,6 +327,7 @@ public abstract class ContainerBase extends LifecycleMBeanBase implements Contai
 
     /**
      * Set the delay between the invocation of the execute method on this container and its children.
+     * 设置在此容器上调用execute方法与其子容器之间的延迟。
      *
      * @param delay The delay in seconds between the invocation of backgroundProcess methods
      */
@@ -345,6 +380,7 @@ public abstract class ContainerBase extends LifecycleMBeanBase implements Contai
     /**
      * Return the Cluster with which this Container is associated. If there is no associated Cluster, return the Cluster
      * associated with our parent Container (if any); otherwise return <code>null</code>.
+     * 返回与此容器关联的集群。如果没有关联的Cluster，返回与父容器关联的Cluster(如果有的话);否则返回<code>null<code>。
      */
     @Override
     public Cluster getCluster() {
@@ -366,8 +402,9 @@ public abstract class ContainerBase extends LifecycleMBeanBase implements Contai
     }
 
 
-    /*
+    /**
      * Provide access to just the cluster component attached to this container.
+     * 只提供对附加到此容器的集群组件的访问。
      */
     protected Cluster getClusterInternal() {
         Lock readLock = clusterLock.readLock();
@@ -641,6 +678,11 @@ public abstract class ContainerBase extends LifecycleMBeanBase implements Contai
      * argument. This method may thrown an <code>IllegalArgumentException</code> if this Container chooses not to be
      * attached to the specified Container, in which case it is not added
      *
+     * 如果支持，向与此容器关联的子容器添加一个新的子容器。
+     * 在将此容器添加到子集合之前，必须调用子容器的<code>setParent()<code>方法，并将此容器作为参数。
+     * 这个方法可能会抛出一个<code>IllegalArgumentException<code>如果这个容器选择不被附加到指定的容器，在这种情况下，它没有被添加
+     *
+     *
      * @param child New child Container to be added
      *
      * @exception IllegalArgumentException if this exception is thrown by the <code>setParent()</code> method of the
@@ -673,11 +715,17 @@ public abstract class ContainerBase extends LifecycleMBeanBase implements Contai
             children.put(child.getName(), child);
         }
 
+        /**
+         * 触发{@link #ADD_CHILD_EVENT} 添加子容器事件
+         */
         fireContainerEvent(ADD_CHILD_EVENT, child);
 
         // Start child
         // Don't do this inside sync block - start can be a slow process and
         // locking the children object can cause problems elsewhere
+        /**
+         * 不要在同步块内执行此操作-启动可能是一个缓慢的过程，锁定子对象可能会在其他地方引起问题
+         */
         try {
             if ((getState().isAvailable() || LifecycleState.STARTING_PREP.equals(getState())) && startChildren) {
                 child.start();
@@ -730,6 +778,7 @@ public abstract class ContainerBase extends LifecycleMBeanBase implements Contai
     /**
      * Return the set of children Containers associated with this Container. If this Container has no children, a
      * zero-length array is returned.
+     * 返回与此容器关联的子容器集。如果此容器没有子容器，则返回一个零长度数组。
      */
     @Override
     public Container[] findChildren() {
@@ -742,6 +791,7 @@ public abstract class ContainerBase extends LifecycleMBeanBase implements Contai
     /**
      * Return the set of container listeners associated with this Container. If this Container has no registered
      * container listeners, a zero-length array is returned.
+     * 返回与此容器关联的容器侦听器集。如果此容器没有注册的容器侦听器，则返回一个零长度数组。
      */
     @Override
     public ContainerListener[] findContainerListeners() {
@@ -1051,6 +1101,10 @@ public abstract class ContainerBase extends LifecycleMBeanBase implements Contai
      * {@link #getPipeline()}.{@link #addValve(Valve)} in case a future implementation provides an alternative method
      * for the digester to use.
      *
+     * 方便的方法，供消化器使用，以简化向容器添加阀门的过程。详细信息请参见{@link Pipeline#addValve(Valve)}。
+     * 除消化器之外的组件应该使用{@link #getPipeline()}。{@link #addValve(Valve)}以防将来的实现为消化器提供替代方法。
+     *
+     *
      * @param valve Valve to be added
      *
      * @exception IllegalArgumentException if this Container refused to accept the specified Valve
@@ -1066,6 +1120,7 @@ public abstract class ContainerBase extends LifecycleMBeanBase implements Contai
     /**
      * Execute a periodic task, such as reloading, etc. This method will be invoked inside the classloading context of
      * this container. Unexpected throwables will be caught and logged.
+     * 执行周期性任务，如重新加载等。此方法将在此容器的类加载上下文中调用。意外的抛出将被捕获并记录。
      */
     @Override
     public void backgroundProcess() {
@@ -1099,6 +1154,9 @@ public abstract class ContainerBase extends LifecycleMBeanBase implements Contai
             }
             current = current.getNext();
         }
+        /**
+         * 执行完周期性定时任务后，触发{@link Lifecycle#PERIODIC_EVENT} 周期性事件
+         */
         fireLifecycleEvent(Lifecycle.PERIODIC_EVENT, null);
     }
 
@@ -1130,6 +1188,7 @@ public abstract class ContainerBase extends LifecycleMBeanBase implements Contai
     /**
      * Notify all container event listeners that a particular event has occurred for this Container. The default
      * implementation performs this notification synchronously using the calling thread.
+     * 通知所有容器事件侦听器此容器发生了特定事件。默认实现使用调用线程同步执行此通知。
      *
      * @param type Event type
      * @param data Event data
@@ -1215,6 +1274,7 @@ public abstract class ContainerBase extends LifecycleMBeanBase implements Contai
 
     /**
      * Start the background thread that will periodically check for session timeouts.
+     * 启动将定期检查会话超时的后台线程。
      */
     protected void threadStart() {
         if (backgroundProcessorDelay > 0 &&
@@ -1237,6 +1297,7 @@ public abstract class ContainerBase extends LifecycleMBeanBase implements Contai
 
     /**
      * Stop the background thread that is periodically checking for session timeouts.
+     * 停止定期检查会话超时的后台线程。
      */
     protected void threadStop() {
         if (backgroundProcessorFuture != null) {
@@ -1275,6 +1336,7 @@ public abstract class ContainerBase extends LifecycleMBeanBase implements Contai
     /**
      * Private runnable class to invoke the backgroundProcess method of this container and its children after a fixed
      * delay.
+     * 私有可运行类，用于在固定延迟后调用此容器及其子容器的backgroundProcess方法。
      */
     protected class ContainerBackgroundProcessor implements Runnable {
 
@@ -1290,12 +1352,18 @@ public abstract class ContainerBase extends LifecycleMBeanBase implements Contai
                 if (container instanceof Context) {
                     Loader loader = ((Context) container).getLoader();
                     // Loader will be null for FailedContext instances
+                    /**
+                     * 对于FailedContext实例，Loader将为空
+                     */
                     if (loader == null) {
                         return;
                     }
 
                     // Ensure background processing for Contexts and Wrappers
                     // is performed under the web app's class loader
+                    /**
+                     * 确保上下文和包装器的后台处理是在web应用的类加载器下执行的
+                     */
                     originalClassLoader = ((Context) container).bind(false, null);
                 }
                 container.backgroundProcess();

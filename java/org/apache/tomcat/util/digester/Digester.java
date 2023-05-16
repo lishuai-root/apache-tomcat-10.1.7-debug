@@ -59,26 +59,39 @@ import org.xml.sax.ext.DefaultHandler2;
 import org.xml.sax.ext.EntityResolver2;
 import org.xml.sax.ext.Locator2;
 import org.xml.sax.helpers.AttributesImpl;
+import org.xml.sax.helpers.DefaultHandler;
 
 
 /**
+ * 继承自{@link DefaultHandler}类，通过实现{@link org.xml.sax.ContentHandler}接口中的方法在解析server.xml配置文件时，
+ * 创建对应的组件，eg: {@link #startElement(String, String, String, Attributes)}
+ *
  * <p>A <strong>Digester</strong> processes an XML input stream by matching a
  * series of element nesting patterns to execute Rules that have been added
  * prior to the start of parsing.  This package was inspired by the
  * <code>XmlMapper</code> class that was part of Tomcat 3.0 and 3.1,
  * but is organized somewhat differently.</p>
+ * <p>A <strong>Digester<strong>通过匹配一系列元素嵌套模式来处理XML输入流，以执行在解析开始之前添加的规则。
+ * 这个包的灵感来自于Tomcat 3.0和3.1中的XmlMapper<code>类，但是组织方式有所不同
+ *
  *
  * <p>See the <a href="package-summary.html#package_description">Digester
  * Developer Guide</a> for more information.</p>
+ * <a href="package-summary.html#package_description">消化器开发指南<a>获取更多信息
  *
  * <p><strong>IMPLEMENTATION NOTE</strong> - A single Digester instance may
  * only be used within the context of a single thread at a time, and a call
  * to <code>parse()</code> must be completed before another can be initiated
  * even from the same thread.</p>
+ * <p><strong>实现说明<strong> -单个消化器实例一次只能在单个线程的上下文中使用，并且在调用<code>parse()<code>之前，
+ * 即使是从同一线程启动另一个也必须完成
+ *
  *
  * <p><strong>IMPLEMENTATION NOTE</strong> - A bug in Xerces 2.0.2 prevents
  * the support of XML schema. You need Xerces 2.1/2.3 and up to make
  * this class working with XML schema</p>
+ * <p><strong>实现说明<strong> - Xerces 2.0.2中的一个错误阻止了对XML模式的支持。需要Xerces 2.12.3及更高版本才能使这个类处理XML模式<p>
+ *
  */
 public class Digester extends DefaultHandler2 {
 
@@ -176,12 +189,14 @@ public class Digester extends DefaultHandler2 {
 
     /**
      * The body text of the current element.
+     * 当前元素的主体文本。
      */
     protected StringBuilder bodyText = new StringBuilder();
 
 
     /**
      * The stack of body text string buffers for surrounding elements.
+     * 用于周围元素的主体文本字符串缓冲区的堆栈。
      */
     protected ArrayStack<StringBuilder> bodyTexts = new ArrayStack<>();
 
@@ -193,6 +208,10 @@ public class Digester extends DefaultHandler2 {
      * stack. After the end tag is reached, the matches are popped again.
      * The depth of is stack is therefore exactly the same as the current
      * "nesting" level of the input xml.
+     * 堆栈，其元素是List对象，每个元素包含从Rules.getMatch()返回的Rule对象列表。
+     * 当输入中的每个xml元素时，匹配规则被压入该堆栈。到达结束标记后，将再次弹出匹配项。
+     * 因此，它的堆栈深度与当前输入xml的“嵌套”级别完全相同。
+     *
      *
      * @since 1.6
      */
@@ -203,24 +222,30 @@ public class Digester extends DefaultHandler2 {
      * If not specified, the context class loader, or the class loader
      * used to load Digester itself, is used, based on the value of the
      * <code>useContextClassLoader</code> variable.
+     *
+     * 用于实例化应用程序对象的类装入器。
+     * 如果未指定，则根据<code>useContextClassLoader<code>变量的值，使用上下文类装入器或用于装入消化器本身的类装入器。
      */
     protected ClassLoader classLoader = null;
 
 
     /**
      * Has this Digester been configured yet.
+     * 这个消化器已经配置好了吗?
      */
     protected boolean configured = false;
 
 
     /**
      * The EntityResolver used by the SAX parser. By default it use this class
+     * SAX解析器使用的EntityResolver。默认情况下，它使用这个类
      */
     protected EntityResolver entityResolver;
 
     /**
      * The URLs of entityValidator that have been registered, keyed by the public
      * identifier that corresponds.
+     * 已注册的entityValidator的url，由对应的公共标识符进行键控。
      */
     protected HashMap<String, String> entityValidator = new HashMap<>();
 
@@ -228,12 +253,14 @@ public class Digester extends DefaultHandler2 {
     /**
      * The application-supplied error handler that is notified when parsing
      * warnings, errors, or fatal errors occur.
+     * 应用程序提供的错误处理程序，在发生解析警告、错误或致命错误时通知它。
      */
     protected ErrorHandler errorHandler = null;
 
 
     /**
      * The SAXParserFactory that is created the first time we need it.
+     * 在我们第一次需要它时创建的SAXParserFactory。
      */
     protected SAXParserFactory factory = null;
 
@@ -245,6 +272,7 @@ public class Digester extends DefaultHandler2 {
 
     /**
      * The current match pattern for nested element processing.
+     * 嵌套元素处理的当前匹配模式。
      */
     protected String match = "";
 
@@ -262,6 +290,11 @@ public class Digester extends DefaultHandler2 {
      * the top Stack element is the most current one.  (This architecture
      * is required because documents can declare nested uses of the same
      * prefix for different Namespace URIs).
+     *
+     * 我们当前正在处理的已注册名称空间。关键字是在文档中声明的名称空间前缀。
+     * 该值是该前缀映射到的名称空间uri的ArrayStack——堆栈的顶部元素是最新的一个。
+     * (这种体系结构是必需的，因为文档可以为不同的命名空间uri声明相同前缀的嵌套使用)。
+     *
      */
     protected HashMap<String, ArrayStack<String>> namespaces = new HashMap<>();
 
@@ -269,12 +302,14 @@ public class Digester extends DefaultHandler2 {
     /**
      * The parameters stack being utilized by CallMethodRule and
      * CallParamRule rules.
+     * CallMethodRule和CallParamRule规则使用的参数堆栈。
      */
     protected ArrayStack<Object> params = new ArrayStack<>();
 
 
     /**
      * The SAXParser we will use to parse the input stream.
+     * 我们将使用SAXParser解析输入流。
      */
     protected SAXParser parser = null;
 
@@ -295,6 +330,7 @@ public class Digester extends DefaultHandler2 {
     /**
      * The "root" element of the stack (in other words, the last object
      * that was popped.
+     * 堆栈的“根”元素(换句话说，最后一个弹出的对象)。
      */
     protected Object root = null;
 
@@ -304,6 +340,8 @@ public class Digester extends DefaultHandler2 {
      * <code>Rule</code> instances and associated matching policy.  If not
      * established before the first rule is added, a default implementation
      * will be provided.
+     *
+     * <code>Rules<code>实现包含我们的<code>Rule<code>实例集合和关联的匹配策略。如果在添加第一条规则之前没有建立规则，则将提供默认实现。
      */
     protected Rules rules = null;
 
@@ -316,6 +354,7 @@ public class Digester extends DefaultHandler2 {
     /**
      * Do we want to use the Context ClassLoader when loading classes
      * for instantiating new objects.  Default is <code>false</code>.
+     * 我们是否希望在加载类以实例化新对象时使用Context ClassLoader ?默认值为<code>false<code>。
      */
     protected boolean useContextClassLoader = false;
 
@@ -727,6 +766,8 @@ public class Digester extends DefaultHandler2 {
      * Return the <code>Rules</code> implementation object containing our
      * rules collection and associated matching policy.  If none has been
      * established, a default implementation will be created and returned.
+     * 返回<code>Rules<code>实现对象，其中包含规则集合和关联的匹配策略。如果没有建立，则将创建并返回一个默认实现。
+     *
      * @return the rules
      */
     public Rules getRules() {
@@ -785,6 +826,7 @@ public class Digester extends DefaultHandler2 {
     /**
      * Set the validating parser flag.  This must be called before
      * <code>parse()</code> is called the first time.
+     * 设置验证解析器标志。这必须在第一次调用<code>parse()<code>之前调用。
      *
      * @param validating The new validating parser flag.
      */
@@ -804,6 +846,7 @@ public class Digester extends DefaultHandler2 {
     /**
      * Set the rules validation flag.  This must be called before
      * <code>parse()</code> is called the first time.
+     * 设置规则验证标志。这必须在第一次调用<code>parse()<code>之前调用。
      *
      * @param rulesValidation The new rules validation flag.
      */
@@ -856,9 +899,12 @@ public class Digester extends DefaultHandler2 {
 
     /**
      * Return the XMLReader to be used for parsing the input document.
+     * 返回用于解析输入文档的XMLReader。
      *
      * FIX ME: there is a bug in JAXP/XERCES that prevent the use of a
      * parser that contains a schema with a DTD.
+     * 修复:JAXP/XERCES中有一个错误，阻止使用包含带有DTD的模式的解析器。
+     *
      * @return the XML reader
      * @exception SAXException if no XMLReader can be instantiated
      */
@@ -956,6 +1002,7 @@ public class Digester extends DefaultHandler2 {
 
     /**
      * Process notification of the end of an XML element being reached.
+     * 处理到达XML元素结束的通知。
      *
      * @param namespaceURI - The Namespace URI, or the empty string if the
      *   element has no Namespace URI or if Namespace processing is not
@@ -1174,6 +1221,7 @@ public class Digester extends DefaultHandler2 {
 
     /**
      * Process notification of the beginning of the document being reached.
+     * 处理到达文档开头的通知。
      *
      * @exception SAXException if a parsing error is to be reported
      */
@@ -1200,12 +1248,18 @@ public class Digester extends DefaultHandler2 {
         // ensure that the digester is properly configured, as
         // the digester could be used as a SAX ContentHandler
         // rather than via the parse() methods.
+        /**
+         * 确保正确配置了消化器，因为消化器可以用作SAX ContentHandler，而不是通过parse()方法。
+         */
         configure();
     }
 
 
     /**
+     * 开始处理xml标签前的回调，此处会创建标签对应的实例
+     *
      * Process notification of the start of an XML element being reached.
+     * 处理到达XML元素开始的通知。
      *
      * @param namespaceURI The Namespace URI, or the empty string if the element
      *   has no Namespace URI or if Namespace processing is not being performed.
@@ -1281,6 +1335,7 @@ public class Digester extends DefaultHandler2 {
 
     /**
      * Process notification that a namespace prefix is coming in to scope.
+     * 处理关于名称空间前缀即将进入作用域的通知。
      *
      * @param prefix Prefix that is being declared
      * @param namespaceURI Corresponding namespace URI being mapped to
@@ -1511,6 +1566,7 @@ public class Digester extends DefaultHandler2 {
     /**
      * Parse the content of the specified input source using this Digester.
      * Returns the root element from the object stack (if any).
+     * 使用此消化器解析指定输入源的内容。从对象堆栈返回根元素(如果有的话)。
      *
      * @param input Input source containing the XML data to be parsed
      * @return the root object
@@ -1578,6 +1634,7 @@ public class Digester extends DefaultHandler2 {
     /**
      * <p>Register a new Rule matching the specified pattern.
      * This method sets the <code>Digester</code> property on the rule.</p>
+     *<p>注册一个匹配指定模式的新规则。该方法在规则上设置<code>Digester<code>属性
      *
      * @param pattern Element matching pattern
      * @param rule Rule to be registered
@@ -1592,6 +1649,7 @@ public class Digester extends DefaultHandler2 {
 
     /**
      * Register a set of Rule instances defined in a RuleSet.
+     * 注册在RuleSet中定义的一组规则实例。
      *
      * @param ruleSet The RuleSet instance to configure from
      */
@@ -1678,6 +1736,7 @@ public class Digester extends DefaultHandler2 {
 
     /**
      * Add an "object create" rule for the specified parameters.
+     * 为指定的参数添加“对象创建”规则。
      *
      * @param pattern Element matching pattern
      * @param className Default Java class name to be created
@@ -1694,6 +1753,7 @@ public class Digester extends DefaultHandler2 {
 
     /**
      * Add a "set next" rule for the specified parameters.
+     * 为指定参数添加“set next”规则。
      *
      * @param pattern Element matching pattern
      * @param methodName Method name to call on the parent element
@@ -1712,6 +1772,7 @@ public class Digester extends DefaultHandler2 {
 
     /**
      * Add a "set properties" rule for the specified parameters.
+     * 为指定的参数添加“set properties”规则。
      *
      * @param pattern Element matching pattern
      * @see SetPropertiesRule
@@ -1781,6 +1842,8 @@ public class Digester extends DefaultHandler2 {
      * Return the n'th object down the stack, where 0 is the top element
      * and [getCount()-1] is the bottom element.  If the specified index
      * is out of range, return <code>null</code>.
+
+     * 返回堆栈中的第n个对象，其中0是顶部元素，[getCount()-1]是底部元素。如果指定的索引超出范围，则返回<code>null<code>。
      *
      * @param n Index of the desired element, where 0 is the top of the stack,
      *  1 is the next element down, and so on.
@@ -1813,7 +1876,7 @@ public class Digester extends DefaultHandler2 {
 
     /**
      * Push a new object onto the top of the object stack.
-     *
+     * 将一个新对象压入对象堆栈的顶部。
      * @param object The new object
      */
     public void push(Object object) {
@@ -1850,6 +1913,7 @@ public class Digester extends DefaultHandler2 {
      * instance.  The default implementation does nothing, but subclasses
      * can override as needed.
      * </p>
+     * 为这个<code>消化器<code>实例的惰性配置提供一个钩子。默认实现什么都不做，但是子类可以根据需要重写。
      *
      * <p>
      * <strong>Note</strong> This method may be called more than once.
@@ -1858,6 +1922,9 @@ public class Digester extends DefaultHandler2 {
     protected void configure() {
 
         // Do not configure more than once
+        /**
+         * 不要配置多次
+         */
         if (configured) {
             return;
         }
@@ -1866,6 +1933,9 @@ public class Digester extends DefaultHandler2 {
         saxLog = LogFactory.getLog("org.apache.tomcat.util.digester.Digester.sax");
 
         // Set the configuration flag to avoid repeating
+        /**
+         * 设置配置标志以避免重复
+         */
         configured = true;
     }
 

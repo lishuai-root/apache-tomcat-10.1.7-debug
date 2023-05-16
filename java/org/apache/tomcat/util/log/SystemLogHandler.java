@@ -27,9 +27,11 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 /**
  * This helper class may be used to do sophisticated redirection of
  * System.out and System.err on a per Thread basis.
+ * 这个助手类可用于执行复杂的System重定向。out和System。在每个线程的基础上出错。
  *
  * A stack is implemented per Thread so that nested startCapture
  * and stopCapture can be used.
+ * 每个线程实现一个堆栈，以便可以使用嵌套的startCapture和stopCapture。
  *
  * @author Remy Maucherat
  * @author Glenn L. Nielsen

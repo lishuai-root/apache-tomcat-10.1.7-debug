@@ -49,6 +49,8 @@ import org.apache.tomcat.util.res.StringManager;
  * that executes each submitted task using
  * one of possibly several pooled threads, normally configured
  * using {@link Executors} factory methods.
+ * 一个{@link java.util.concurrent.ExecutorService}使用可能的几个线程池中的一个执行每个提交的任务，
+ * 通常使用{@link Executors}工厂方法配置。
  *
  * <p>Thread pools address two different problems: they usually
  * provide improved performance when executing large numbers of
@@ -2109,6 +2111,8 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
      * This method is invoked by the thread that executed the task. If
      * non-null, the Throwable is the uncaught {@code RuntimeException}
      * or {@code Error} that caused execution to terminate abruptly.
+     * 方法在给定Runnable执行完成时调用。此方法由执行任务的线程调用。如果非空，
+     * 则Throwable是未捕获的{@code RuntimeException}或{@code Error}，导致执行突然终止。
      *
      * <p>This implementation does nothing, but may be customized in
      * subclasses. Note: To properly nest multiple overridings, subclasses

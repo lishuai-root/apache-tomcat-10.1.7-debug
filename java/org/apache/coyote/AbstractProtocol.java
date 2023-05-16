@@ -60,6 +60,7 @@ public abstract class AbstractProtocol<S> implements ProtocolHandler, MBeanRegis
 
     /**
      * Counter used to generate unique JMX names for connectors using automatic port binding.
+     * 计数器，用于使用自动端口绑定为连接器生成唯一的JMX名称。
      */
     private static final AtomicInteger nameCounter = new AtomicInteger(0);
 
@@ -67,6 +68,7 @@ public abstract class AbstractProtocol<S> implements ProtocolHandler, MBeanRegis
     /**
      * Unique ID for this connector. Only used if the connector is configured to use a random port as the port will
      * change if stop(), start() is called.
+     * 此连接器的唯一ID。仅在连接器配置为使用随机端口时使用，因为如果调用stop()， start()，端口将发生变化。
      */
     private int nameIndex = 0;
 
@@ -74,6 +76,7 @@ public abstract class AbstractProtocol<S> implements ProtocolHandler, MBeanRegis
     /**
      * Endpoint that provides low-level network I/O - must be matched to the ProtocolHandler implementation
      * (ProtocolHandler using NIO, requires NIO Endpoint etc.).
+     * 提供低级网络IO的端点必须与协议处理程序实现匹配(协议处理程序使用NIO，需要NIO端点等)。
      */
     private final AbstractEndpoint<S, ?> endpoint;
 
@@ -94,7 +97,13 @@ public abstract class AbstractProtocol<S> implements ProtocolHandler, MBeanRegis
         ConnectionHandler<S> cHandler = new ConnectionHandler<>(this);
         getEndpoint().setHandler(cHandler);
         setHandler(cHandler);
+        /**
+         * 设置关闭连接时的延迟时间，默认为-1
+         */
         setConnectionLinger(Constants.DEFAULT_CONNECTION_LINGER);
+        /**
+         * 设置禁用Nagle算法
+         */
         setTcpNoDelay(Constants.DEFAULT_TCP_NO_DELAY);
     }
 
@@ -105,6 +114,10 @@ public abstract class AbstractProtocol<S> implements ProtocolHandler, MBeanRegis
      * Generic property setter used by the digester. Other code should not need to use this. The digester will only use
      * this method if it can't find a more specific setter. That means the property belongs to the Endpoint, the
      * ServerSocketFactory or some other lower level component. This method ensures that it is visible to both.
+     *
+     * 消化器使用的通用属性设置器。其他代码不需要使用这个。消化器只有在找不到更具体的setter时才会使用此方法。
+     * 这意味着该属性属于端点、ServerSocketFactory或其他较低级别的组件。此方法确保对两者都可见。
+     *
      *
      * @param name  The name of the property to set
      * @param value The value, in string form, to set for the property
@@ -767,6 +780,11 @@ public abstract class AbstractProtocol<S> implements ProtocolHandler, MBeanRegis
 
     // ------------------------------------------- Connection handler base class
 
+    /**
+     * 连接处理程序基类
+     *
+     * @param <S>
+     */
     protected static class ConnectionHandler<S> implements AbstractEndpoint.Handler<S> {
 
         private final AbstractProtocol<S> proto;

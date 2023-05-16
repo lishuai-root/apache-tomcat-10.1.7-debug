@@ -84,6 +84,9 @@ import org.apache.tomcat.util.security.Escape;
  * functionality will be protected by a security constraint in the web
  * application deployment descriptor.  However, this requirement can be
  * relaxed during testing.
+ * 允许远程管理与此web应用程序安装在同一虚拟主机内的web应用程序的Servlet。
+ * 通常，此功能将受到web应用程序部署描述符中的安全约束的保护。但是，在测试期间可以放松这个要求。
+ *
  * <p>
  * This servlet examines the value returned by <code>getPathInfo()</code>
  * and related query parameters to determine what action is being requested.

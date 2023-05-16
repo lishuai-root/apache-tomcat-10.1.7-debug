@@ -41,8 +41,11 @@ import org.apache.tomcat.util.res.StringManager;
 
 /**
  * Valve that implements the default basic behavior for the <code>StandardHost</code> container implementation.
+ * 实现<code>StandardHost<code>容器实现的默认基本行为的阀门。
+ *
  * <p>
  * <b>USAGE CONSTRAINT</b>: This implementation is likely to be useful only when processing HTTP requests.
+ * <b>USAGE CONSTRAINT<b>:这个实现可能只在处理HTTP请求时有用。
  *
  * @author Craig R. McClanahan
  * @author Remy Maucherat
@@ -55,6 +58,9 @@ final class StandardHostValve extends ValveBase {
     // Saves a call to getClassLoader() on very request. Under high load these
     // calls took just long enough to appear as a hot spot (although a very
     // minor one) in a profiler.
+    /**
+     * 保存对每个请求的getClassLoader()调用。在高负载情况下，这些调用所花费的时间足以在分析器中显示为一个热点(尽管是一个非常小的热点)。
+     */
     private static final ClassLoader MY_CLASSLOADER = StandardHostValve.class.getClassLoader();
 
     // ------------------------------------------------------ Constructor
@@ -69,6 +75,7 @@ final class StandardHostValve extends ValveBase {
     /**
      * Select the appropriate child Context to process this request, based on the specified request URI. If no matching
      * Context can be found, return an appropriate HTTP error.
+     * 根据指定的请求URI，选择适当的子上下文来处理此请求。如果找不到匹配的上下文，则返回一个适当的HTTP错误。
      *
      * @param request  Request to be processed
      * @param response Response to be produced
@@ -174,6 +181,7 @@ final class StandardHostValve extends ValveBase {
      * Handle the HTTP status code (and corresponding message) generated while processing the specified Request to
      * produce the specified Response. Any exceptions that occur during generation of the error report are logged and
      * swallowed.
+     * 处理在处理指定的请求时生成的HTTP状态码(和相应的消息)，以生成指定的响应。在生成错误报告期间发生的任何异常都将被记录并吞下。
      *
      * @param request  The request being processed
      * @param response The response being generated

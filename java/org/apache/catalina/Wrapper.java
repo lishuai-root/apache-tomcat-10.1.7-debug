@@ -28,18 +28,26 @@ import jakarta.servlet.UnavailableException;
  * definition from the deployment descriptor of the web application.  It
  * provides a convenient mechanism to use Interceptors that see every single
  * request to the servlet represented by this definition.
+ * A <b>Wrapper<b>是一个容器，它表示来自web应用程序的部署描述符的单个servlet定义。
+ * 它提供了一种方便的机制来使用拦截器，拦截器可以看到对这个定义所表示的servlet的每一个请求。
+ *
  * <p>
  * Implementations of Wrapper are responsible for managing the servlet life
  * cycle for their underlying servlet class, including calling init() and
  * destroy() at appropriate times.
+ * Wrapper的实现负责管理其底层servlet类的servlet生命周期，包括在适当的时间调用init()和destroy()。
+ *
  * <p>
  * The parent Container attached to a Wrapper will generally be an
  * implementation of Context, representing the servlet context (and
  * therefore the web application) within which this servlet executes.
+ * 附加到包装器上的父容器通常是Context的实现，表示servlet在其中执行的servlet上下文(因此也是web应用程序)。
+ *
  * <p>
  * Child Containers are not allowed on Wrapper implementations, so the
  * <code>addChild()</code> method should throw an
  * <code>IllegalArgumentException</code>.
+ * 子容器在包装器实现上是不允许的，所以<code>addChild()<code>方法应该抛出<code>IllegalArgumentException<code>。
  *
  * @author Craig R. McClanahan
  */

@@ -27,6 +27,7 @@ import org.apache.tomcat.util.security.PrivilegedSetTccl;
 /**
  * Simple task thread factory to use to create threads for an executor
  * implementation.
+ * 用于为执行器实现创建线程的简单任务线程工厂。
  */
 public class TaskThreadFactory implements ThreadFactory {
 

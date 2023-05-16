@@ -29,6 +29,7 @@ import java.util.concurrent.TimeoutException;
 /**
  * Class which wraps a ScheduledExecutorService, while preventing
  * lifecycle and configuration operations.
+ * 类，它包装了ScheduledExecutorService，同时防止生命周期和配置操作。
  */
 public class ScheduledThreadPoolExecutor implements ScheduledExecutorService {
 

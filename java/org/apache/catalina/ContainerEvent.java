@@ -20,6 +20,7 @@ import java.util.EventObject;
 
 /**
  * General event for notifying listeners of significant changes on a Container.
+ * 将容器上的重大更改通知侦听器的通用事件。
  *
  * @author Craig R. McClanahan
  */

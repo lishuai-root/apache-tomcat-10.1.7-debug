@@ -76,6 +76,7 @@ import org.apache.tomcat.util.res.StringManager;
 
 /**
  * Helper class used to initialize and populate the JNDI context associated with each context and server.
+ * Helper类，用于初始化和填充与每个上下文和服务器相关联的JNDI上下文。
  *
  * @author Remy Maucherat
  */

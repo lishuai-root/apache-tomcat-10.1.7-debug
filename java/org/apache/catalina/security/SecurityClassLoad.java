@@ -21,6 +21,8 @@ package org.apache.catalina.security;
  * Java SecurityManager so that the defineClassInPackage
  * RuntimePermission does not trigger an AccessControlException.
  *
+ * 静态类用于在使用java SecurityManager时预加载java类，以便defineClassInPackage RuntimePermission不会触发AccessControlException。
+ *
  * @author Glenn L. Nielsen
  */
 public final class SecurityClassLoad {

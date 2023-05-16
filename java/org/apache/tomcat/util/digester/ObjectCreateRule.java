@@ -24,6 +24,7 @@ import org.xml.sax.Attributes;
  * Rule implementation that creates a new object and pushes it
  * onto the object stack.  When the element is complete, the
  * object will be popped
+ * 创建新对象并将其推入对象堆栈的规则实现。当元素完成后，对象将弹出
  */
 
 public class ObjectCreateRule extends Rule {
@@ -47,6 +48,7 @@ public class ObjectCreateRule extends Rule {
     /**
      * Construct an object create rule with the specified class name and an
      * optional attribute name containing an override.
+     * 使用指定的类名和包含覆盖的可选属性名构造对象创建规则。
      *
      * @param className Java class name of the object to be created
      * @param attributeName Attribute name which, if present, contains an
@@ -80,6 +82,7 @@ public class ObjectCreateRule extends Rule {
 
     /**
      * Process the beginning of this element.
+     * 处理这个元素的开头。
      *
      * @param namespace the namespace URI of the matching element, or an
      *   empty string if the parser is not namespace aware or the element has
@@ -115,6 +118,8 @@ public class ObjectCreateRule extends Rule {
 
     /**
      * Return the actual class name of the class to be instantiated.
+     * 返回要实例化的类的实际类名。
+     *
      * @param attributes The attribute list for this element
      * @return the class name
      */

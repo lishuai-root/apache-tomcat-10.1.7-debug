@@ -26,6 +26,7 @@ import org.apache.tomcat.util.security.PermissionCheck;
  * A {@link org.apache.tomcat.util.IntrospectionUtils.SecurePropertySource}
  * that uses system properties to resolve expressions.
  * This property source is always active by default.
+ * {@link org.apache.tomcat.util.IntrospectionUtils.SecurePropertySource}使用系统属性来解析表达式。默认情况下，此属性源始终处于活动状态。
  *
  * @see Digester
  */

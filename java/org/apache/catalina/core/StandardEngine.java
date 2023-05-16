@@ -59,10 +59,14 @@ public class StandardEngine extends ContainerBase implements Engine {
 
     /**
      * Create a new StandardEngine component with the default basic Valve.
+     * 用默认的基本Valve创建一个新的StandardEngine组件。
      */
     public StandardEngine() {
         pipeline.setBasic(new StandardEngineValve());
         // By default, the engine will hold the reloading thread
+        /**
+         * 默认情况下，引擎将保持重载线程
+         */
         backgroundProcessorDelay = 10;
     }
 
@@ -71,22 +75,26 @@ public class StandardEngine extends ContainerBase implements Engine {
 
     /**
      * Host name to use when no server host, or an unknown host, is specified in the request.
+     * 当请求中没有指定服务器主机或指定未知主机时使用的主机名。
      */
     private String defaultHost = null;
 
 
     /**
      * The <code>Service</code> that owns this Engine, if any.
+     * 拥有此引擎的<code>服务<code>，如果有的话。
      */
     private Service service = null;
 
     /**
      * The JVM Route ID for this Tomcat instance. All Route ID's must be unique across the cluster.
+     * 这个Tomcat实例的JVM路由ID。所有路由ID必须在整个集群中唯一。
      */
     private String jvmRouteId;
 
     /**
      * Default access log to use for request/response pairs where we can't ID the intended host and context.
+     * 默认访问日志，用于无法标识预期主机和上下文的请求响应对。
      */
     private final AtomicReference<AccessLog> defaultAccessLog = new AtomicReference<>();
 
@@ -94,6 +102,7 @@ public class StandardEngine extends ContainerBase implements Engine {
 
     /**
      * Obtain the configured Realm and provide a default Realm implementation when no explicit configuration is set.
+     * 当没有设置显式配置时，获取配置的Realm并提供默认的Realm实现。
      *
      * @return configured realm, or a {@link NullRealm} by default
      */

@@ -48,7 +48,20 @@ import org.apache.tomcat.util.res.StringManager;
 
 
 /**
+ * Connector节点代表与客户处理连接的组件，负责接收客户的请求，并回复客户响应。
+ * port: 监听的端口
+ * protocol: 连接使用的协议
+ * connectionTimeout: 连接超时时间
+ * redirectPort: 当用户用http请求某个资源，而该资源本身又被设置了必须要https方式访问，此时Tomcat会自动重定向到这个redirectPort设置的https端口
+ * acceptCount: 设定在监听端口队列中的最大客户请求数,默认值为10，如果队列已满,客户请求将被拒绝
+ * address: 如果服务器有两个以上IP地址,该属性可以设定端口监听的IP地址,默认情况下,端口会监听服务器上所有IP地址
+ * enableLookups: 如果设为true,表示支持域名解析,可以把IP地址解析为主机名.Web应用调用request.getRemoteHost方法将返回客户的主机名.该属性默认值为true
+ * executor: 配置tomcat的线程池，在此配置的名称与server.xml文件中Service节点下的Executor节点name属性相对应
+ * compression: 如果带宽有限的话，可以用GZIP压缩，off：表示禁止压缩、on：表示允许压缩（文本将被压缩）、force：表示所有情况下都进行压缩，默认值为off
+ * URIEncoding: 用于解码URL的字符编码，没有指定默认值为ISO-8859-1
+ *
  * Implementation of a Coyote connector.
+ * Coyote连接器的实现。
  *
  * @author Craig R. McClanahan
  * @author Remy Maucherat
@@ -71,6 +84,11 @@ public class Connector extends LifecycleMBeanBase {
     }
 
 
+    /**
+     * 根据协议创建连接
+     *
+     * @param protocol
+     */
     public Connector(String protocol) {
         configuredProtocol = protocol;
         ProtocolHandler p = null;
@@ -87,6 +105,9 @@ public class Connector extends LifecycleMBeanBase {
             protocolHandlerClassName = protocol;
         }
         // Default for Connector depends on this system property
+        /**
+         * Connector的默认值取决于此系统属性，默认为false
+         */
         setThrowOnFailure(Boolean.getBoolean("org.apache.catalina.startup.EXIT_ON_INIT_FAILURE"));
     }
 
@@ -104,6 +125,7 @@ public class Connector extends LifecycleMBeanBase {
 
     /**
      * The <code>Service</code> we are associated with (if any).
+     * 与我们关联的<code>服务<code>(如果有的话)。
      */
     protected Service service = null;
 
@@ -111,6 +133,7 @@ public class Connector extends LifecycleMBeanBase {
     /**
      * If this is <code>true</code> the '\' character will be permitted as a path delimiter. If not specified, the
      * default value of <code>false</code> will be used.
+     * 如果<code>为true， <code>将允许'\'字符作为路径分隔符。如果未指定，则使用默认值false<code>。
      */
     protected boolean allowBackslash = false;
 
@@ -123,12 +146,14 @@ public class Connector extends LifecycleMBeanBase {
 
     /**
      * Default timeout for asynchronous requests (ms).
+     * 异步请求的默认超时时间(毫秒)。
      */
     protected long asyncTimeout = 30000;
 
 
     /**
      * The "enable DNS lookups" flag for this Connector.
+     * 此连接器的“启用DNS查找”标志。
      */
     protected boolean enableLookups = false;
 
@@ -139,12 +164,17 @@ public class Connector extends LifecycleMBeanBase {
      * <code>ISO-8859-1</code> and the <code>Content-Type</code> response header will include a
      * <code>charset=ISO-8859-1</code> component. (SRV.15.2.22.1) If not specified, the default specification compliant
      * value of <code>true</code> will be used.
+     *
+     * 如果这是<code>true<code>，那么调用<code> response.getWriter()<code>，如果没有指定字符编码，
+     * 将导致后续调用<code> response.getCharacterEncoding()<code>返回<code>ISO-8859-1<code>，
+     * 并且<code>Content-Type<code>响应头将包含<code>charset=ISO-8859-1<code>组件。(SRV.15.2.22.1)如果未指定，则使用<code>true<code>的默认规范兼容值。
      */
     protected boolean enforceEncodingInGetWriter = true;
 
 
     /**
      * Is generation of X-Powered-By response header enabled/disabled?
+     * 生成X-Powered-By响应头是否启用或禁用?
      */
     protected boolean xpoweredBy = false;
 
@@ -153,6 +183,8 @@ public class Connector extends LifecycleMBeanBase {
      * The server name to which we should pretend requests to this Connector were directed. This is useful when
      * operating Tomcat behind a proxy server, so that redirects get constructed accurately. If not specified, the
      * server name included in the <code>Host</code> header is used.
+     * 我们应该假装向此连接器发出的请求被定向到的服务器名称。
+     * 当在代理服务器后面操作Tomcat时，这很有用，这样可以准确地构建重定向。如果未指定，则使用<code>主机<code>报头中包含的服务器名。
      */
     protected String proxyName = null;
 
@@ -161,6 +193,8 @@ public class Connector extends LifecycleMBeanBase {
      * The server port to which we should pretend requests to this Connector were directed. This is useful when
      * operating Tomcat behind a proxy server, so that redirects get constructed accurately. If not specified, the port
      * number specified by the <code>port</code> property is used.
+     * 我们应该假装向该连接器发送请求的服务器端口。
+     * 当在代理服务器后面操作Tomcat时，这很有用，这样可以准确地构建重定向。如果未指定，则使用<code>port<code>属性指定的端口号。
      */
     protected int proxyPort = 0;
 
@@ -169,24 +203,29 @@ public class Connector extends LifecycleMBeanBase {
      * The flag that controls recycling of the facades of the request processing objects. If set to <code>true</code>
      * the object facades will be discarded when the request is recycled. If the security manager is enabled, this
      * setting is ignored and object facades are always discarded.
+     * 控制请求处理对象的外观回收的标志。
+     * 如果设置为<code>true<code>，则对象facade将在回收请求时被丢弃。如果启用了安全管理器，则忽略此设置，并且始终丢弃对象外观。
      */
     protected boolean discardFacades = true;
 
 
     /**
      * The redirect port for non-SSL to SSL redirects.
+     * 非SSL到SSL重定向的重定向端口。
      */
     protected int redirectPort = 443;
 
 
     /**
      * The request scheme that will be set on all requests received through this connector.
+     * 将在通过该连接器接收的所有请求上设置的请求方案。
      */
     protected String scheme = "http";
 
 
     /**
      * The secure connection flag that will be set on all requests received through this connector.
+     * 将在通过该连接器接收的所有请求上设置的安全连接标志。
      */
     protected boolean secure = false;
 
@@ -199,52 +238,61 @@ public class Connector extends LifecycleMBeanBase {
 
     /**
      * The maximum number of cookies permitted for a request. Use a value less than zero for no limit. Defaults to 200.
+     * 一个请求允许的最大cookie数。如果没有限制，则使用小于零的值。默认为200。
      */
     private int maxCookieCount = 200;
 
     /**
      * The maximum number of parameters (GET plus POST) which will be automatically parsed by the container. 10000 by
      * default. A value of less than 0 means no limit.
+     * 容器将自动解析的参数的最大数目(GET加POST)。缺省值为10000。小于0的值表示没有限制。
      */
     protected int maxParameterCount = 10000;
 
     /**
      * Maximum size of a POST which will be automatically parsed by the container. 2MB by default.
+     * POST的最大大小，它将被容器自动解析。默认为2MB。
      */
     protected int maxPostSize = 2 * 1024 * 1024;
 
 
     /**
      * Maximum size of a POST which will be saved by the container during authentication. 4kB by default
+     * 在身份验证期间容器将保存的POST的最大大小。默认为4kB
      */
     protected int maxSavePostSize = 4 * 1024;
 
     /**
      * Comma-separated list of HTTP methods that will be parsed according to POST-style rules for
      * application/x-www-form-urlencoded request bodies.
+     * 以逗号分隔的HTTP方法列表，这些方法将根据application/x-www-form-urlencoded请求体的post样式规则进行解析。
      */
     protected String parseBodyMethods = "POST";
 
     /**
      * A Set of methods determined by {@link #parseBodyMethods}.
+     * 一组由{@link #parseBodyMethods}决定的方法。
      */
     protected HashSet<String> parseBodyMethodsSet;
 
 
     /**
      * Flag to use IP-based virtual hosting.
+     * 使用基于ip的虚拟主机的标志。
      */
     protected boolean useIPVHosts = false;
 
 
     /**
      * Coyote Protocol handler class name. See {@link #Connector()} for current default.
+     * Coyote协议处理程序类名。请参阅{@link #Connector()}获取当前默认值。
      */
     protected final String protocolHandlerClassName;
 
 
     /**
      * Name of the protocol that was configured.
+     * 配置的协议名称。 默认是"HTTP/1.1"，在conf/server.xml中配置
      */
     protected final String configuredProtocol;
 
@@ -325,6 +373,7 @@ public class Connector extends LifecycleMBeanBase {
 
     /**
      * Set the <code>Service</code> with which we are associated (if any).
+     * 设置与我们关联的<code>Service<code>(如果有的话)。
      *
      * @param service The service that owns this Engine
      */

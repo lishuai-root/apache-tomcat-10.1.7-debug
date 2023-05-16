@@ -35,12 +35,20 @@ import org.apache.tomcat.util.res.StringManager;
 
 /**
  * Implementation of <code>LifecycleListener</code> that will init and and destroy APR.
+ * 将初始化和销毁APR的<code>LifecycleListener<code>的实现。
+ *
  * <p>
  * This listener must only be nested within {@link Server} elements.
+ * 此监听器只能嵌套在{@link Server}元素中。
+ *
  * <p>
  * <strong>Note</strong>: If you are running Tomcat in an embedded fashion and have more than one Server instance per
  * JVM, this listener <em>must not</em> be added to the {@code Server} instances, but handled outside by the calling
  * code which is bootstrapping the embedded Tomcat instances. Not doing so will lead to JVM crashes.
+ *
+ * <strong>注意<strong>:如果你以嵌入式方式运行Tomcat，并且每个JVM有多个Server实例，这个监听器<em>一定不能被添加到{@code Server}实例中，
+ * 而是由引导嵌入式Tomcat实例的调用代码在外部处理。不这样做将导致JVM崩溃。
+ *
  *
  * @since 4.1
  */
@@ -51,6 +59,7 @@ public class AprLifecycleListener implements LifecycleListener {
     /**
      * Info messages during init() are cached until Lifecycle.BEFORE_INIT_EVENT so that, in normal (non-error) cases,
      * init() related log messages appear at the expected point in the lifecycle.
+     * init()期间的信息消息被缓存到生命周期。BEFORE_INIT_EVENT，以便在正常(非错误)情况下，init()相关的日志消息出现在生命周期的预期点。
      */
     private static final List<String> initInfoLogMessages = new ArrayList<>(3);
 
@@ -86,9 +95,13 @@ public class AprLifecycleListener implements LifecycleListener {
     /**
      * The "FIPS mode" level that we use as the argument to OpenSSL method <code>FIPS_mode_set()</code> to enable FIPS
      * mode and that we expect as the return value of <code>FIPS_mode()</code> when FIPS mode is enabled.
+     * 我们使用的“FIPS模式”级别作为OpenSSL方法<code>FIPS_mode_set()<code>的参数来启用FIPS模式，
+     * 并且我们期望在启用FIPS模式时作为<code>FIPS_mode()<code>的返回值。
+     *
      * <p>
      * In the future the OpenSSL library might grow support for different non-zero "FIPS" modes that specify different
      * allowed subsets of ciphers or whatever, but nowadays only "1" is the supported value.
+     * 在未来，OpenSSL库可能会增加对不同的非零“FIPS”模式的支持，这些模式指定了不同的允许的密码子集或其他东西，但现在只有“1”是支持的值。
      * </p>
      *
      * @see <a href="http://wiki.openssl.org/index.php/FIPS_mode_set%28%29">OpenSSL method FIPS_mode_set()</a>
@@ -118,6 +131,7 @@ public class AprLifecycleListener implements LifecycleListener {
 
     /**
      * Primary entry point for startup and shutdown events.
+     * 启动和关闭事件的主要入口点。
      *
      * @param event The event that has occurred
      */

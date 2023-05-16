@@ -19,6 +19,7 @@ package org.apache.catalina;
 /**
  * <p>Decoupling interface which specifies that an implementing class is
  * associated with at most one <strong>Container</strong> instance.</p>
+ * 解耦接口，指定一个实现类最多与一个<strong>容器<strong>实例相关联。
  *
  * @author Craig R. McClanahan
  * @author Peter Donald

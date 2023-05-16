@@ -22,21 +22,28 @@ import java.util.EmptyStackException;
 /**
  * <p>Imported copy of the <code>ArrayStack</code> class from
  * Commons Collections, which was the only direct dependency from Digester.</p>
+ * <p>从Commons Collections中导入的<code>ArrayStack<code>类的拷贝，它是唯一直接依赖于Digester的。<p>
  *
  * <p><strong>WARNING</strong> - This class is public solely to allow it to be
  * used from subpackages of <code>org.apache.commons.digester</code>.
  * It should not be considered part of the public API of Commons Digester.
  * If you want to use such a class yourself, you should use the one from
  * Commons Collections directly.</p>
+ * <p><strong>WARNING<strong> -这个类是公共的，只允许在<code>org.apache.commons.digester<code>的子包中使用。
+ * 它不应被视为Commons digest的公共API的一部分。如果你想自己使用这样的类，你应该直接使用Commons Collections中的类。<p>
+ *
  *
  * <p>An implementation of the {@link java.util.Stack} API that is based on an
  * <code>ArrayList</code> instead of a <code>Vector</code>, so it is not
  * synchronized to protect against multi-threaded access.  The implementation
  * is therefore operates faster in environments where you do not need to
  * worry about multiple thread contention.</p>
+ * <p> {@link java.util.Stack} API，它基于<code>ArrayList<code>而不是<code>Vector<code>，因此它不会同步以防止多线程访问。
+ * 因此，在不需要担心多线程争用的环境中，该实现运行得更快。<p>
  *
  * <p>Unlike <code>Stack</code>, <code>ArrayStack</code> accepts null entries.
  * </p>
+ * <p>与<code>Stack<code>不同，<code>ArrayStack<code>接受空项。< p >
  *
  * @param <E> Type of object in this stack
  *

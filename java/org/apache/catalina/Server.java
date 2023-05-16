@@ -23,6 +23,11 @@ import org.apache.catalina.deploy.NamingResourcesImpl;
 import org.apache.catalina.startup.Catalina;
 
 /**
+ * server是tomcat中的顶层组件，一个tomcat应用只有一个server实例，即一个server就代表了一个tomcat
+ * server默认会通过8005端口监听"SHUTDOWN"指令
+ *
+ * 一个server组件中可以包含多个service组件
+ *
  * A <code>Server</code> element represents the entire Catalina
  * servlet container.  Its attributes represent the characteristics of
  * the servlet container as a whole.  A <code>Server</code> may contain
@@ -86,6 +91,7 @@ public interface Server extends Lifecycle {
 
     /**
      * Set the port number we listen to for shutdown commands.
+     * 设置我们监听关机命令的端口号。
      *
      * @param port The new port number
      *
@@ -97,6 +103,7 @@ public interface Server extends Lifecycle {
      * Get the number that offsets the port used for shutdown commands.
      * For example, if port is 8005, and portOffset is 1000,
      * the server listens at 9005.
+     * 获取用于关闭命令的端口偏移的数字。例如，如果端口为8005，端口偏移为1000，则服务器在9005侦听。
      *
      * @return the port offset
      */
@@ -171,6 +178,7 @@ public interface Server extends Lifecycle {
 
     /**
      * Set the outer Catalina startup/shutdown component if present.
+     * 设置外部Catalina startup/shutdown组件(如果存在)。
      *
      * @param catalina the outer Catalina component
      */

@@ -48,6 +48,7 @@ import javax.management.loading.ClassLoaderRepository;
  * An implementation of the MBean registry that effectively disables MBean
  * registration. This is typically used when low memory footprint is a primary
  * concern.
+ * 有效禁用MBean注册的MBean注册中心的实现。这通常在主要关注低内存占用时使用。
  */
 public class NoDescriptorRegistry extends Registry {
 

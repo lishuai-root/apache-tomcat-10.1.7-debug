@@ -27,6 +27,12 @@ public interface ContextBind {
      * {@link org.apache.catalina.ThreadBindingListener#bind()} will be called
      * after the change has been made.
      *
+     * 将当前线程上下文类装入器更改为web应用程序类装入器。
+     * 如果没有定义web应用程序类装入器，或者当前线程已经在使用web应用程序类装入器，则不会进行任何更改。
+     * 如果类装入器被更改，并且如果配置了{@link org.apache.catalina.ThreadBindingListener}，
+     * 那么{@link org.apache.catalina.ThreadBindingListener#bind()}将在更改完成后被调用。
+     *
+     *
      * @param usePrivilegedAction
      *          Should a {@link java.security.PrivilegedAction} be used when
      *          obtaining the current thread context class loader and setting
@@ -49,6 +55,12 @@ public interface ContextBind {
      * {@link org.apache.catalina.ThreadBindingListener} is configured then
      * {@link org.apache.catalina.ThreadBindingListener#unbind()} will be called
      * before the change is made.
+     *
+     * 将当前线程上下文类装入器恢复为调用{@link #bind(boolean, ClassLoader)}之前使用的原始类装入器。
+     * 如果没有将原始类装入器传递给此方法，则不会进行任何更改。
+     * 如果类装入器被更改，并且如果配置了{@link org.apache.catalina.ThreadBindingListener}，
+     * 那么在进行更改之前将调用{@link org.apache.catalina.ThreadBindingListener#unbind()}。
+     *
      *
      * @param usePrivilegedAction
      *          Should a {@link java.security.PrivilegedAction} be used when

@@ -86,28 +86,39 @@ import org.apache.tomcat.util.res.StringManager;
 // only programmatic. This would disable the default servlet.
 
 /**
+ * {@link Tomcat}类提供了通过api添加和启动项目的实现，支持将Tomcat内嵌到web项目中轻量级启动Tomcat，
+ * 并且支持指定web.xml文件，而不使用全局web.xml(conf/web.xml)
+ * 例如：SpringBoot
+ *
+ *
  * Minimal tomcat starter for embedding/unit tests.
+ * 用于嵌入单元测试的最小tomcat启动器。
  *
  * <p>
  * Tomcat supports multiple styles of configuration and
  * startup - the most common and stable is server.xml-based,
  * implemented in org.apache.catalina.startup.Bootstrap.
+ * Tomcat支持多种配置和启动风格——最常见和最稳定的是基于server.xml的，在org.apache.catalina.startup.Bootstrap中实现。
  *
  * <p>
  * This class is for use in apps that embed tomcat.
+ * 这个类用于嵌入tomcat的应用程序。
  *
  * <p>
- * Requirements:
+ * Requirements: 需求
  * <ul>
  *   <li>all tomcat classes and possibly servlets are in the classpath.
  *       (for example all is in one big jar, or in eclipse CP, or in
  *        any other combination)</li>
+ *   <li>所有tomcat类和servlet都在类路径中。(例如，所有这些都在一个大的jar中，或者在eclipse CP中，或者在任何其他组合中)<li>
  *
  *   <li>we need one temporary directory for work files</li>
+ *   <li>需要一个临时目录存放工作文件<li>
  *
  *   <li>no config file is required. This class provides methods to
  *       use if you have a webapp with a web.xml file, but it is
  *       optional - you can use your own servlets.</li>
+ *   <li>不需要配置文件。如果你有一个带有web.xml文件的web应用，这个类提供了一些方法，但它是可选的——你可以使用自己的servlet。
  * </ul>
  *
  * <p>
@@ -115,6 +126,8 @@ import org.apache.tomcat.util.res.StringManager;
  * methods, by default, create a simple in-memory security realm and apply it.
  * If you need more complex security processing, you can define a subclass of
  * this class.
+ * 有各种各样的“添加”方法来配置servlet和web应用程序。
+ * 默认情况下，这些方法创建一个简单的内存安全领域并应用它。如果需要更复杂的安全处理，可以定义该类的子类。
  *
  * <p>
  * This class provides a set of convenience methods for configuring web
@@ -129,6 +142,15 @@ import org.apache.tomcat.util.res.StringManager;
  * application will be processed normally. Normal web fragment and
  * {@link jakarta.servlet.ServletContainerInitializer} processing will be applied.
  *
+ * 这个类提供了一组方便的方法来配置web应用程序上下文;addWebapp()<code>方法的所有重载。
+ * 这些方法相当于将web应用程序添加到主机的appBase(通常是webapps目录)。
+ * 这些方法创建一个Context，用与<code>confweb.xml<code>提供的默认值相等的值来配置它(详细信息请参见{@link initWebappDefaults(String)})，
+ * 然后将Context添加到Host中。
+ * 这些方法不使用全局默认的web.xml;相反，它们会添加{@link LifecycleListener}来配置默认值。
+ * 任何与应用程序打包的WEB-INF/web.xml和META-INF/context.xml都将被正常处理。
+ * 正常的web片段和{@link jakarta.servlet.ServletContainerInitializer}将进行处理。
+ *
+ *
  * <p>
  * In complex cases, you may prefer to use the ordinary Tomcat API to create
  * webapp contexts; for example, you might need to install a custom Loader
@@ -136,21 +158,30 @@ import org.apache.tomcat.util.res.StringManager;
  * behavior of the <code>addWebapp</code> methods, you may want to call two
  * methods of this class: {@link #noDefaultWebXmlPath()} and
  * {@link #getDefaultWebXmlListener()}.
+ * 在复杂的情况下，你可能更喜欢使用普通的Tomcat API来创建webapp上下文;
+ * 例如，你可能需要在调用{@link HostaddChild(Container)}之前安装一个自定义Loader。
+ * 为了复制<code>addWebapp<code>方法的基本行为，您可能需要调用该类的两个方法:
+ * {@link #noDefaultWebXmlPath()}和{@link #getDefaultWebXmlListener()}。
+ *
  *
  * <p>
  * {@link #getDefaultWebXmlListener()} returns a {@link LifecycleListener} that
  * adds the standard DefaultServlet, JSP processing, and welcome files. If you
  * add this listener, you must prevent Tomcat from applying any standard global
  * web.xml with ...
+ * {@link #getDefaultWebXmlListener()}返回一个{@link LifecycleListener}，它添加了标准的DefaultServlet、JSP处理和欢迎文件。
+ * 如果你添加了这个监听器，你必须阻止Tomcat使用…
  *
  * <p>
  * {@link #noDefaultWebXmlPath()} returns a dummy pathname to configure to
  * prevent {@link ContextConfig} from trying to apply a global web.xml file.
+ * {@link #noDefaultWebXmlPath()}返回一个虚拟的路径名来配置，以防止{@link ContextConfig}尝试应用全局web.xml文件。
  *
  * <p>
  * This class provides a main() and few simple CLI arguments,
  * see setters for doc. It can be used for simple tests and
  * demo.
+ * 这个类提供了一个main()和几个简单的CLI参数，请参阅文档的setter。它可以用于简单的测试和演示。
  *
  * @see <a href="https://gitbox.apache.org/repos/asf?p=tomcat.git;a=blob;f=test/org/apache/catalina/startup/TestTomcat.java">TestTomcat</a>
  * @author Costin Manolache
@@ -164,6 +195,10 @@ public class Tomcat {
     // after Loggers are configured but before they are used. The purpose of
     // this Map is to retain strong references to explicitly configured loggers
     // so that configuration is not lost.
+    /**
+     * 一些日志记录实现对日志记录器使用弱引用，因此如果GC在配置日志记录器之后运行，但在使用它们之前运行，则有可能丢失日志记录配置。
+     * 这个Map的目的是保留对显式配置的记录器的强引用，这样配置就不会丢失。
+     */
     private final Map<String, Logger> pinnedLoggers = new HashMap<>();
 
     protected Server server;
@@ -440,11 +475,17 @@ public class Tomcat {
 
     /**
      * Initialize the server given the specified configuration source.
+     * 根据指定的配置源初始化服务器。
+     *
      * The server will be loaded according to the Tomcat configuration
      * files contained in the source (server.xml, web.xml, context.xml,
      * SSL certificates, etc).
+     * 服务器将根据源代码中包含的Tomcat配置文件(server.xml、web.xml、context.xml、SSL证书等)加载。
+     *
      * If no configuration source is specified, it will use the default
      * locations for these files.
+     * 如果没有指定配置源，它将使用这些文件的默认位置。
+     *
      * @param source The configuration source
      * @param catalinaArguments The arguments that should be passed to Catalina
      */
@@ -454,6 +495,9 @@ public class Tomcat {
         Catalina catalina = new Catalina();
         // Load the Catalina instance with the regular configuration files
         // from specified source
+        /**
+         * 使用来自指定源的常规配置文件加载Catalina实例
+         */
         if (catalinaArguments == null) {
             catalina.load();
         } else {
@@ -1284,11 +1328,17 @@ public class Tomcat {
 
     /**
      * Main executable method for use with a Maven packager.
+     * 用于Maven打包器的主要可执行方法。
+     *
      * @param args the command line arguments
      * @throws Exception if an error occurs
      */
     public static void main(String[] args) throws Exception {
         // Process some command line parameters
+        /**
+         * 处理一些命令行参数
+         * catalinaArguments数组用来保存针对Catalina的参数
+         */
         String[] catalinaArguments = null;
         for (int i = 0; i < args.length; i++) {
             if (args[i].equals("--no-jmx")) {
@@ -1296,6 +1346,9 @@ public class Tomcat {
             } else if (args[i].equals("--catalina")) {
                 // This was already processed before
                 // Skip the rest of the arguments as they are for Catalina
+                /**
+                 * 这在之前就已经处理过了跳过剩下的关于卡塔琳娜的论据
+                 */
                 ArrayList<String> result = new ArrayList<>();
                 for (int j = i + 1; j < args.length; j++) {
                     result.add(args[j]);
@@ -1304,11 +1357,17 @@ public class Tomcat {
                 break;
             }
         }
+        /**
+         * 使用当前线程默认的类加载器加载一些指定类
+         */
         SecurityClassLoad.securityClassLoad(Thread.currentThread().getContextClassLoader());
         org.apache.catalina.startup.Tomcat tomcat = new org.apache.catalina.startup.Tomcat();
         // Create a Catalina instance and let it parse the configuration files
         // It will also set a shutdown hook to stop the Server when needed
         // Use the default configuration source
+        /**
+         * 创建一个Catalina实例，并让它解析配置文件。它还将设置一个shutdown钩子，以便在需要时停止服务器
+         */
         tomcat.init(null, catalinaArguments);
         boolean await = false;
         String path = "";

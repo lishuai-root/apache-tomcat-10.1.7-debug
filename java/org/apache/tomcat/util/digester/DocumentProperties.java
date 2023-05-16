@@ -26,6 +26,7 @@ public interface DocumentProperties {
 
     /**
      * The character encoding used by the source XML document.
+     * 源XML文档使用的字符编码。
      */
     interface Charset {
         void setCharset(java.nio.charset.Charset charset);

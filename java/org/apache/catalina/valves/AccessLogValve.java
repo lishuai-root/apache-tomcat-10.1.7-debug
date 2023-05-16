@@ -42,18 +42,29 @@ import org.apache.tomcat.util.buf.B2CConverter;
 /**
  * This is a concrete implementation of {@link AbstractAccessLogValve} that outputs the access log to a file. The
  * features of this implementation include:
+ * 这是{@link AbstractAccessLogValve}的具体实现，它将访问日志输出到一个文件。这个实现的特点包括:
+ *
  * <ul>
  * <li>Automatic date-based rollover of log files</li>
+ * 自动基于日期的日志文件滚转
+ *
  * <li>Optional log file rotation</li>
+ * 可选的日志文件旋转
+ *
  * </ul>
  * <p>
  * For UNIX users, another field called <code>checkExists</code> is also available. If set to true, the log file's
  * existence will be checked before each logging. This way an external log rotator can move the file somewhere and
  * Tomcat will start with a new file.
+ * 对于UNIX用户，还有另一个名为<code>checkExists<code>的字段可用。
+ * 如果设置为true，则将在每次日志记录之前检查日志文件的存在性。
+ * 通过这种方式，外部日志旋转器可以将文件移动到某个地方，Tomcat将从一个新文件启动。
+ *
  * </p>
  * <p>
  * For JMX junkies, a public method called <code>rotate</code> has been made available to allow you to tell this
  * instance to move the existing log file to somewhere else and start writing a new log file.
+ * 对于JMX爱好者，提供了一个名为<code>rotate<code>的公共方法，允许您告诉该实例将现有日志文件移动到其他地方，并开始编写新的日志文件。
  * </p>
  */
 public class AccessLogValve extends AbstractAccessLogValve {
@@ -70,6 +81,7 @@ public class AccessLogValve extends AbstractAccessLogValve {
 
     /**
      * The as-of date for the currently open log file, or a zero-length string if there is no open log file.
+     * 当前打开的日志文件的截止日期，如果没有打开的日志文件，则为零长度字符串。
      */
     private volatile String dateStamp = "";
 

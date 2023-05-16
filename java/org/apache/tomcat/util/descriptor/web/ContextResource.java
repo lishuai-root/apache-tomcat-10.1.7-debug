@@ -22,6 +22,7 @@ package org.apache.tomcat.util.descriptor.web;
  * Representation of a resource reference for a web application, as
  * represented in a <code>&lt;resource-ref&gt;</code> element in the
  * deployment descriptor.
+ * web应用程序的资源引用的表示，用部署描述符中的<code>&lt;resource-ref&gt;<code>元素表示。
  *
  * @author Craig R. McClanahan
  * @author Peter Rossbach (pero@apache.org)

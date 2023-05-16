@@ -24,16 +24,22 @@ import java.util.List;
  * <p>Default implementation of the <code>Rules</code> interface that supports
  * the standard rule matching behavior.  This class can also be used as a
  * base class for specialized <code>Rules</code> implementations.</p>
+ * <p> <code>Rules<code>接口的默认实现，支持标准规则匹配行为。这个类也可以用作专门化的<code>规则<code>实现的基类
  *
  * <p>The matching policies implemented by this class support two different
  * types of pattern matching rules:</p>
+ * 该类实现的匹配策略支持两种不同类型的模式匹配规则
  * <ul>
  * <li><em>Exact Match</em> - A pattern "a/b/c" exactly matches a
  *     <code>&lt;c&gt;</code> element, nested inside a <code>&lt;b&gt;</code>
  *     element, which is nested inside an <code>&lt;a&gt;</code> element.</li>
+ *     <li><em>精确匹配<em> -模式“abc”精确匹配嵌套在<code>&lt;b&gt;<code>元素中的<code>&lt;c&gt;<code>元素，该元素嵌套在<code>&lt;a&gt;<code>元素中
+ *
  * <li><em>Tail Match</em> - A pattern "&#42;/a/b" matches a
  *     <code>&lt;b&gt;</code> element, nested inside an <code>&lt;a&gt;</code>
  *      element, no matter how deeply the pair is nested.</li>
+ *      <li><em>尾部匹配<em> -模式"&42;ab"匹配嵌套在<code>&lt;a&gt;<code>元素中的<code>元素，无论嵌套的深度有多深
+ *
  * </ul>
  */
 public class RulesBase implements Rules {
@@ -44,6 +50,7 @@ public class RulesBase implements Rules {
      * The set of registered Rule instances, keyed by the matching pattern.
      * Each value is a List containing the Rules for that pattern, in the
      * order that they were originally registered.
+     * 已注册的规则实例集，由匹配的模式进行键控。每个值都是一个List，其中包含该模式的规则，按照它们最初注册的顺序排列。
      */
     protected HashMap<String,List<Rule>> cache = new HashMap<>();
 
@@ -57,6 +64,7 @@ public class RulesBase implements Rules {
     /**
      * The set of registered Rule instances, in the order that they were
      * originally registered.
+     * 已注册的规则实例集，按照它们最初注册的顺序。
      */
     protected ArrayList<Rule> rules = new ArrayList<>();
 
@@ -91,6 +99,7 @@ public class RulesBase implements Rules {
 
     /**
      * Register a new Rule instance matching the specified pattern.
+     * 注册与指定模式匹配的新Rule实例。
      *
      * @param pattern Nesting pattern to be matched for this Rule
      * @param rule Rule instance to be registered
@@ -98,6 +107,10 @@ public class RulesBase implements Rules {
     @Override
     public void add(String pattern, Rule rule) {
         // to help users who accidentally add '/' to the end of their patterns
+        /**
+         * 为了帮助那些不小心在模式末尾添加"/"的用户
+         * 去除匹配模式结尾的"/"
+         */
         int patternLength = pattern.length();
         if (patternLength>1 && pattern.endsWith("/")) {
             pattern = pattern.substring(0, patternLength-1);
@@ -179,7 +192,8 @@ public class RulesBase implements Rules {
      * Return a List of Rule instances for the specified pattern that also
      * match the specified namespace URI (if any).  If there are no such
      * rules, return <code>null</code>.
-     *
+     * 返回指定模式的Rule实例列表，这些实例也匹配指定的名称空间URI(如果有的话)。如果没有这样的规则，则返回<code>null<code>。
+     * 
      * @param namespaceURI Namespace URI to match, or <code>null</code> to
      *  select matching rules regardless of namespace URI
      * @param pattern Pattern to be matched

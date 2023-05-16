@@ -26,6 +26,9 @@ import org.apache.tomcat.util.net.SSLHostConfig;
  * Abstract the protocol implementation, including threading, etc. This is the main interface to be implemented by a
  * coyote protocol. Adapter is the main interface to be implemented by a coyote servlet container.
  *
+ * 抽象协议的实现，包括线程等。这是由coyote协议实现的主接口。适配器是由coyote servlet容器实现的主接口。
+ *
+ *
  * @author Remy Maucherat
  * @author Costin Manolache
  *
@@ -211,6 +214,7 @@ public interface ProtocolHandler {
 
     /**
      * Create a new ProtocolHandler for the given protocol.
+     * 为给定的协议创建一个新的ProtocolHandler。
      *
      * @param protocol the protocol
      *

@@ -23,6 +23,8 @@ import java.util.List;
  * matching patterns) plus an implementation of a matching policy that selects
  * the rules that match a particular pattern of nested elements discovered
  * during parsing.
+ *
+ * 定义Rule实例(和相应的匹配模式)集合的公共接口，以及匹配策略的实现，该策略选择与解析过程中发现的特定嵌套元素模式匹配的规则。
  */
 public interface Rules {
 
@@ -66,6 +68,9 @@ public interface Rules {
      * than one Rule instance matches, they <strong>must</strong> be returned
      * in the order originally registered through the <code>add()</code>
      * method.
+     * 返回与指定嵌套模式匹配的所有已注册Rule实例的List，如果没有匹配，则返回零长度List。
+     * 如果有多个Rule实例匹配，它们<strong>必须按照最初通过<code>add()<code>方法注册的顺序返回<strong>。
+     *
      *
      * @param namespaceURI Namespace URI for which to select matching rules,
      *  or <code>null</code> to match regardless of namespace URI
