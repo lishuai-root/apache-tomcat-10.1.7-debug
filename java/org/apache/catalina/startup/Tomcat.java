@@ -1038,6 +1038,8 @@ public class Tomcat {
      * Create the configured {@link Context} for the given <code>host</code>.
      * The default constructor of the class that was configured with
      * {@link StandardHost#setContextClass(String)} will be used
+     * 为给定的<code>主机<code>创建配置的{@link Context}。
+     * 使用{@link StandardHostsetContextClass(String)}配置的类的默认构造函数将被使用
      *
      * @param host
      *            host for which the {@link Context} should be created, or

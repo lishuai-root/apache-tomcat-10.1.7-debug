@@ -138,6 +138,7 @@ import org.apache.tomcat.util.security.PrivilegedSetTccl;
 /**
  * Standard implementation of the <b>Context</b> interface. Each child container must be a Wrapper implementation to
  * process the requests directed to a particular servlet.
+ * Context<b>接口的标准实现。每个子容器必须是一个Wrapper实现，以处理定向到特定servlet的请求。
  *
  * @author Craig R. McClanahan
  * @author Remy Maucherat

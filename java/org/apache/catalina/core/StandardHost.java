@@ -128,6 +128,7 @@ public class StandardHost extends ContainerBase implements Host {
 
     /**
      * The deploy on startup flag for this Host.
+     * 此主机的启动时部署标志。
      */
     private boolean deployOnStartup = true;
 

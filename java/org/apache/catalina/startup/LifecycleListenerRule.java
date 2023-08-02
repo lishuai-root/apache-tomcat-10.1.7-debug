@@ -28,14 +28,21 @@ import org.xml.sax.Attributes;
  * Rule that creates a new {@link LifecycleListener} and associates it with the
  * top object on the stack which must implement {@link Container}. The
  * implementation class to be used is determined by:
+ * 该规则创建一个新的{@link LifecycleListener}，并将其与堆栈上必须实现{@link Container}的顶部对象关联。要使用的实现类由以下因素决定:
+ *
  * <ol>
  * <li>Does the top element on the stack specify an implementation class using
  *     the attribute specified when this rule was created?</li>
+ *     堆栈上的顶部元素是否使用创建此规则时指定的属性指定实现类?
+ *
  * <li>Does the parent {@link Container} of the {@link Container} on the top of
  *     the stack specify an implementation class using the attribute specified
  *     when this rule was created?</li>
+ *     栈顶{@link Container}的父{@link Container}是否使用创建此规则时指定的属性指定实现类?
+ *
  * <li>Use the default implementation class specified when this rule was
  *     created.</li>
+ *     使用创建此规则时指定的默认实现类。
  * </ol>
  */
 public class LifecycleListenerRule extends Rule {

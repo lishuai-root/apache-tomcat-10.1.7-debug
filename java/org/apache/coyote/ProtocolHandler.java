@@ -38,6 +38,7 @@ public interface ProtocolHandler {
 
     /**
      * Return the adapter associated with the protocol handler.
+     * 返回与协议处理程序关联的适配器。
      *
      * @return the adapter
      */
@@ -46,6 +47,7 @@ public interface ProtocolHandler {
 
     /**
      * The adapter, used to call the connector.
+     * 适配器，用来调用连接器。
      *
      * @param adapter The adapter to associate
      */
@@ -54,6 +56,7 @@ public interface ProtocolHandler {
 
     /**
      * The executor, provide access to the underlying thread pool.
+     * 执行器，提供对底层线程池的访问。
      *
      * @return The executor used to process requests
      */
@@ -70,6 +73,7 @@ public interface ProtocolHandler {
 
     /**
      * Get the utility executor that should be used by the protocol handler.
+     * 获取协议处理程序应该使用的实用程序执行程序。
      *
      * @return the executor
      */
@@ -78,6 +82,7 @@ public interface ProtocolHandler {
 
     /**
      * Set the utility executor that should be used by the protocol handler.
+     * 设置协议处理程序应该使用的实用程序执行程序。
      *
      * @param utilityExecutor the executor
      */
@@ -135,6 +140,7 @@ public interface ProtocolHandler {
     /**
      * Close the server socket (to prevent further connections) if the server socket was bound on {@link #start()}
      * (rather than on {@link #init()} but do not perform any further shutdown.
+     * 如果服务器套接字绑定在{@link #start()}上(而不是{@link #init()}上)，但不执行任何进一步的关闭，则关闭服务器套接字(以防止进一步的连接)。
      */
     void closeServerSocketGraceful();
 
@@ -142,6 +148,7 @@ public interface ProtocolHandler {
     /**
      * Wait for the client connections to the server to close gracefully. The method will return when all of the client
      * connections have closed or the method has been waiting for {@code waitTimeMillis}.
+     * 等待客户端与服务器的连接正常关闭。当所有的客户端连接都关闭或该方法一直在等待{@code waitTimeMillis}时，该方法将返回。
      *
      * @param waitMillis The maximum time to wait in milliseconds for the client connections to close.
      *
@@ -193,6 +200,7 @@ public interface ProtocolHandler {
     /**
      * Some protocols, like AJP, have a packet length that shouldn't be exceeded, and this can be used to adjust the
      * buffering used by the application layer.
+     * 一些协议，如AJP，有一个不应该超过的数据包长度，这可以用来调整应用层使用的缓冲。
      *
      * @return the desired buffer size, or -1 if not relevant
      */
@@ -204,6 +212,7 @@ public interface ProtocolHandler {
     /**
      * The default behavior is to identify connectors uniquely with address and port. However, certain connectors are
      * not using that and need some other identifier, which then can be used as a replacement.
+     * 默认行为是使用地址和端口唯一地标识连接器。但是，某些连接器不使用该标识符，而需要一些其他标识符，然后可以将其用作替代品。
      *
      * @return the id
      */

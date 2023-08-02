@@ -119,6 +119,7 @@ import org.xml.sax.SAXParseException;
 /**
  * Startup event listener for a <b>Context</b> that configures the properties
  * of that Context, and the associated defined servlets.
+ * a <b>Context<b>的启动事件侦听器，它配置该Context的属性，以及相关的已定义servlet。
  *
  * @author Craig R. McClanahan
  */
@@ -286,6 +287,7 @@ public class ContextConfig implements LifecycleListener {
 
     /**
      * Process events for an associated Context.
+     * 处理关联上下文的事件。
      *
      * @param event The lifecycle event that has occurred
      */

@@ -30,12 +30,15 @@ import javax.management.ObjectName;
  * Properties that can be set in the &lt;Connector&gt; element
  * in server.xml. All properties are prefixed with &quot;socket.&quot;
  * and are currently only working for the Nio connector
+ * 可以在Connector&gt;中设置的属性元素。所有属性的前缀都是&quot;socket.&quot;目前只支持Nio连接器
  */
 public class SocketProperties {
 
     /**
      * Enable/disable socket processor cache, this bounded cache stores
      * SocketProcessor objects to reduce GC
+     * 启用套接字处理器缓存，此有界缓存存储SocketProcessor对象以减少GC
+     *
      * Default is 500
      * -1 is unlimited
      * 0 is disabled
@@ -45,6 +48,8 @@ public class SocketProperties {
     /**
      * Enable/disable poller event cache, this bounded cache stores
      * PollerEvent objects to reduce GC for the poller
+     * 启用轮询器事件缓存，此有界缓存存储PollerEvent对象以减少轮询器的GC
+     *
      * Default is 500
      * -1 is unlimited
      * 0 is disabled
@@ -55,42 +60,50 @@ public class SocketProperties {
     /**
      * Enable/disable direct buffers for the network buffers
      * Default value is disabled
+     * Enable/disable网络缓冲区的直接缓冲区默认值为禁用
      */
     protected boolean directBuffer = false;
 
     /**
      * Enable/disable direct buffers for the network buffers for SSL
      * Default value is disabled
+     * Enable/disable用于SSL的网络缓冲区的直接缓冲区默认值为禁用
      */
     protected boolean directSslBuffer = false;
 
     /**
      * Socket receive buffer size in bytes (SO_RCVBUF).
      * JVM default used if not set.
+     * 套接字接收缓冲区大小(SO_RCVBUF)。如果未设置，则使用JVM默认值。
      */
     protected Integer rxBufSize = null;
 
     /**
      * Socket send buffer size in bytes (SO_SNDBUF).
      * JVM default used if not set.
+     * 套接字发送缓冲区大小(SO_SNDBUF)。如果未设置，则使用JVM默认值。
      */
     protected Integer txBufSize = null;
 
     /**
      * The application read buffer size in bytes.
      * Default value is rxBufSize
+     * 应用程序读取缓冲区大小(以字节为单位)。默认值为rxBufSize
      */
     protected int appReadBufSize = 8192;
 
     /**
      * The application write buffer size in bytes
      * Default value is txBufSize
+     * 应用程序写缓冲区大小(以字节为单位)默认值为txBufSize
      */
     protected int appWriteBufSize = 8192;
 
     /**
      * NioChannel pool size for the endpoint,
      * this value is how many channels
+     * NioChannel池大小为端点，此值表示有多少个通道
+     *
      * -1 means unlimited cached, 0 means no cache,
      * -2 means bufferPoolSize will be used
      * Default value is -2
@@ -103,6 +116,9 @@ public class SocketProperties {
      * Default value is based on the max memory reported by the JVM,
      * if less than 1GB, then 0, else the value divided by 32. This value
      * will then be used to compute bufferPool if its value is -2
+     * 要缓存的缓冲池大小(以字节为单位)-1表示无限，0表示没有缓存默认值基于JVM报告的最大内存，
+     * 如果小于1GB，则为0，否则将该值除以32。如果该值为-2，则该值将用于计算bufferPool
+     *
      */
     protected int bufferPoolSize = -2;
 
@@ -116,16 +132,19 @@ public class SocketProperties {
 
     /**
      * SO_KEEPALIVE option. JVM default used if not set.
+     * SO_KEEPALIVE选项。如果未设置，则使用JVM默认值。
      */
     protected Boolean soKeepAlive = null;
 
     /**
      * OOBINLINE option. JVM default used if not set.
+     * OOBINLINE选项。如果未设置，则使用JVM默认值。
      */
     protected Boolean ooBInline = null;
 
     /**
      * SO_REUSEADDR option. JVM default used if not set.
+     * SO_REUSEADDR选项。如果未设置，则使用JVM默认值。
      */
     protected Boolean soReuseAddress = null;
 
@@ -160,6 +179,8 @@ public class SocketProperties {
      * http://docs.oracle.com/javase/1.5.0/docs/api/java/net/Socket.html#setPerformancePreferences(int,%20int,%20int)
      * All three performance attributes must be set or the JVM defaults will be
      * used.
+     * 根据http://docs.oracle.com/javase/1.5.0/docs/api/java/net/Socket.html#setPerformancePreferences(int,%20int,%20int)
+     * 设置所有三个性能属性，否则将使用JVM默认值。
      */
     protected Integer performanceConnectionTime = null;
 
@@ -232,10 +253,28 @@ public class SocketProperties {
         }
     }
 
+    /**
+     * 设置socket属性
+     * 1. 设置自定义socket缓冲区大小 - {@link ServerSocket#setReceiveBufferSize(int)}
+     * 2. 设置性能首选项，通过数值的相对大小取决倾向 - {@link ServerSocket#setPerformancePreferences(int, int, int)}
+     * 3. 设置是否重用套接字端口 - {@link ServerSocket#setReuseAddress(boolean)}
+     * 4. 设置{@link ServerSocket#accept()} 超时时常 - {@link ServerSocket#setSoTimeout(int)}
+     *
+     * @param socket
+     * @throws SocketException
+     */
     public void setProperties(ServerSocket socket) throws SocketException{
+        /**
+         * 设置自定义缓冲区大小
+         */
         if (rxBufSize != null) {
             socket.setReceiveBufferSize(rxBufSize.intValue());
         }
+        /**
+         * 设置性能选项
+         * 性能首选项由三个整数描述，它们的值表示短连接时间、低延迟和高带宽的相对重要性。整数的绝对值是不相关的;
+         * 为了选择协议，只需比较这些值，值越大表示偏好越强。
+         */
         if (performanceConnectionTime != null && performanceLatency != null &&
                 performanceBandwidth != null) {
             socket.setPerformancePreferences(
@@ -243,9 +282,23 @@ public class SocketProperties {
                     performanceLatency.intValue(),
                     performanceBandwidth.intValue());
         }
+        /**
+         * 设置是否重用套接字
+         * 如果一个监听端口的程序关闭后，os不会立刻关闭端口，而是等待一会，避免后续使用该端口的程序接收到脏数据
+         * {@link ServerSocket#setReuseAddress(boolean)}设置是否重用端口，表示上一个程序结束后端口未关闭时是否可以重复使用该端口
+         *
+         * eg:
+         *  现有ServerSocket : A, B和Socket: C
+         *  1.先启动A，后启动C，C不停的发送数据，此时关闭A，C会收到链接断开的异常
+         *  2.先启动A，后启动C，C不停的发送数据，此时关闭A并快速启动B，此时B会重用A使用的端口，C不会收到链接断开的异常，但是B不是处理C发送的数据
+         *  {@link SocketTest}
+         */
         if (soReuseAddress != null) {
             socket.setReuseAddress(soReuseAddress.booleanValue());
         }
+        /**
+         * 设置{@link ServerSocket#accept()} 方法的超时时间
+         */
         if (soTimeout != null && soTimeout.intValue() >= 0) {
             socket.setSoTimeout(soTimeout.intValue());
         }

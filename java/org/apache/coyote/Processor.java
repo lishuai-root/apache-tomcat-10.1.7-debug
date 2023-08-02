@@ -26,12 +26,14 @@ import org.apache.tomcat.util.net.SocketWrapperBase;
 
 /**
  * Common interface for processors of all protocols.
+ * 所有协议处理器的公共接口。
  */
 public interface Processor {
 
     /**
      * Process a connection. This is called whenever an event occurs (e.g. more data arrives) that allows processing to
      * continue for a connection that is not currently being processed.
+     * 处理连接。每当一个事件发生(例如更多的数据到达)，允许当前未被处理的连接继续处理时，就会调用该函数。
      *
      * @param socketWrapper The connection to process
      * @param status        The status of the connection that triggered this additional processing

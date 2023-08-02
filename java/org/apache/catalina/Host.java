@@ -199,6 +199,7 @@ public interface Host extends Container {
      * @return the value of the deploy on startup flag.  If true, it indicates
      * that this host's child webapps should be discovered and automatically
      * deployed.
+     * 启动时部署标志的值。如果为true，则表示该主机的子web应用程序应该被发现并自动部署。
      */
     boolean getDeployOnStartup();
 

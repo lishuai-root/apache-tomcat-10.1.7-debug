@@ -50,6 +50,7 @@ public interface Adapter {
     /**
      * Prepare the given request/response for processing. This method requires that the request object has been
      * populated with the information available from the HTTP headers.
+     * 为处理准备给定的请求响应。此方法要求请求对象已经用HTTP头中可用的信息填充。
      *
      * @param req The request object
      * @param res The response object
@@ -69,6 +70,7 @@ public interface Adapter {
      * Assert that request and response have been recycled. If they have not then log a warning and force a recycle.
      * This method is called as a safety check when a processor is being recycled and may be returned to a pool for
      * reuse.
+     * 断言请求和响应已被回收。如果没有，则记录警告并强制回收。当处理器被回收并可能返回到池中进行重用时，调用此方法作为安全检查。
      *
      * @param req Request
      * @param res Response
@@ -77,6 +79,7 @@ public interface Adapter {
 
     /**
      * Provide the name of the domain to use to register MBeans for components associated with the connector.
+     * 提供要用于为与连接器关联的组件注册mbean的域的名称。
      *
      * @return The MBean domain name
      */

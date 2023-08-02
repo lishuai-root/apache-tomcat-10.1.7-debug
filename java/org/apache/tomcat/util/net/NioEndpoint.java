@@ -20,10 +20,7 @@ import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.SocketAddress;
-import java.net.SocketTimeoutException;
+import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.CancelledKeyException;
 import java.nio.channels.Channel;
@@ -220,9 +217,23 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
 
     // Separated out to make it easier for folks that extend NioEndpoint to
     // implement custom [server]sockets
+
+    /**
+     * 分离出来是为了让扩展NioEndpoint的人更容易实现自定义的[服务器]套接字
+     *
+     * 1. 创建套接字 - {@link ServerSocketChannel#open()}
+     * 2. 设置参数 - {@link SocketProperties#setProperties(ServerSocket)}
+     * 3. 绑定端口 - {@link ServerSocketChannel#bind(SocketAddress, int)}
+     * 4. 设置套接字通道为阻塞模式 - {@link ServerSocketChannel#configureBlocking(boolean)}
+     * 
+     * @throws Exception
+     */
     protected void initServerSocket() throws Exception {
         if (getUseInheritedChannel()) {
             // Retrieve the channel provided by the OS
+            /**
+             * 检索操作系统提供的通道
+             */
             Channel ic = System.inheritedChannel();
             if (ic instanceof ServerSocketChannel) {
                 serverSock = (ServerSocketChannel) ic;
@@ -252,11 +263,27 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
                 }
             }
         } else {
+            /**
+             * 创建NIO套接字
+             */
             serverSock = ServerSocketChannel.open();
+            /**
+             * 设置套接字参数
+             * 1. 设置自定义socket缓冲区大小 - {@link ServerSocket#setReceiveBufferSize(int)}
+             * 2. 设置性能首选项，通过数值的相对大小取决倾向 - {@link ServerSocket#setPerformancePreferences(int, int, int)}
+             * 3. 设置是否重用套接字端口 - {@link ServerSocket#setReuseAddress(boolean)}
+             * 4. 设置{@link ServerSocket#accept()} 超时时常 - {@link ServerSocket#setSoTimeout(int)}
+             */
             socketProperties.setProperties(serverSock.socket());
+            /**
+             * 绑定端口
+             */
             InetSocketAddress addr = new InetSocketAddress(getAddress(), getPortWithOffset());
             serverSock.bind(addr, getAcceptCount());
         }
+        /**
+         * 设置套接字为阻塞模式
+         */
         serverSock.configureBlocking(true); //mimic APR behavior
     }
 
@@ -569,6 +596,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
 
     /**
      * PollerEvent, cacheable object for poller events to avoid GC
+     * PollerEvent，轮询器事件的可缓存对象，以避免GC
      */
     public static class PollerEvent {
 

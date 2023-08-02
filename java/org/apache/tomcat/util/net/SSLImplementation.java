@@ -30,6 +30,7 @@ import org.apache.tomcat.util.res.StringManager;
  * Provides a factory and base implementation for the Tomcat specific mechanism
  * that allows alternative SSL/TLS implementations to be used without requiring
  * the implementation of a full JSSE provider.
+ * 为特定于Tomcat的机制提供工厂和基本实现，该机制允许使用替代SSL/TLS实现，而不需要实现完整的JSSE提供程序。
  */
 public abstract class SSLImplementation {
 

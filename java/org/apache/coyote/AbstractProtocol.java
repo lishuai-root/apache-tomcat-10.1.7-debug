@@ -316,6 +316,7 @@ public abstract class AbstractProtocol<S> implements ProtocolHandler, MBeanRegis
     /**
      * The time Tomcat will wait for a subsequent request before closing the connection. The default is
      * {@link #getConnectionTimeout()}.
+     * Tomcat在关闭连接之前等待后续请求的时间。默认值是{@link #getConnectionTimeout()}。
      *
      * @return The timeout in milliseconds
      */

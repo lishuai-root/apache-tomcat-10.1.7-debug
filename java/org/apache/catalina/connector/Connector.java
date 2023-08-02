@@ -78,6 +78,7 @@ public class Connector extends LifecycleMBeanBase {
 
     /**
      * Defaults to using HTTP/1.1 NIO implementation.
+     * 默认使用HTTP1.1 NIO实现。
      */
     public Connector() {
         this("HTTP/1.1");
@@ -569,6 +570,7 @@ public class Connector extends LifecycleMBeanBase {
 
     /**
      * Set list of HTTP methods which should allow body parameter parsing. This defaults to <code>POST</code>.
+     * 设置允许体参数解析的HTTP方法列表。默认为<code>POST<code>。
      *
      * @param methods Comma separated list of HTTP method names
      */
@@ -1036,11 +1038,17 @@ public class Connector extends LifecycleMBeanBase {
 
         super.initInternal();
 
+        /**
+         * 协议句柄，final修饰，创建对象时构造传参
+         */
         if (protocolHandler == null) {
             throw new LifecycleException(sm.getString("coyoteConnector.protocolHandlerInstantiationFailed"));
         }
 
         // Initialize adapter
+        /**
+         * 初始化适配器，用于处理请求
+         */
         adapter = new CoyoteAdapter(this);
         protocolHandler.setAdapter(adapter);
         if (service != null) {
@@ -1048,15 +1056,25 @@ public class Connector extends LifecycleMBeanBase {
         }
 
         // Make sure parseBodyMethodsSet has a default
+        /**
+         * 设置允许体参数解析的HTTP方法列表。默认为<code>POST<code>。
+         * 确保parseBodyMethodsSet有一个默认值
+         */
         if (null == parseBodyMethodsSet) {
             setParseBodyMethods(getParseBodyMethods());
         }
 
+        /**
+         * SSL相关
+         */
         if (AprStatus.isAprAvailable() && AprStatus.getUseOpenSSL() &&
                 protocolHandler instanceof AbstractHttp11JsseProtocol) {
             AbstractHttp11JsseProtocol<?> jsseProtocolHandler = (AbstractHttp11JsseProtocol<?>) protocolHandler;
             if (jsseProtocolHandler.isSSLEnabled() && jsseProtocolHandler.getSslImplementationName() == null) {
                 // OpenSSL is compatible with the JSSE configuration, so use it if APR is available
+                /**
+                 * OpenSSL与JSSE配置兼容，所以如果APR可用，请使用它
+                 */
                 jsseProtocolHandler.setSslImplementationName(OpenSSLImplementation.class.getName());
             }
         }

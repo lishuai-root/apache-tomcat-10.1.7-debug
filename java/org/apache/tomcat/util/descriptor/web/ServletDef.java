@@ -28,6 +28,8 @@ import org.apache.tomcat.util.res.StringManager;
 /**
  * Representation of a servlet definition for a web application, as represented
  * in a <code>&lt;servlet&gt;</code> element in the deployment descriptor.
+
+ * web应用程序的servlet定义的表示，用部署描述符中的<code>&lt;servlet&gt;<code>元素表示。
  */
 
 public class ServletDef implements Serializable {

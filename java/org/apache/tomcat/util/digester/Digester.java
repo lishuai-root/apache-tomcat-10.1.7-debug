@@ -913,6 +913,9 @@ public class Digester extends DefaultHandler2 {
             reader = getParser().getXMLReader();
         }
 
+        /**
+         * 设置自身为处理程序，解析xml标签时通过回调创建组件实例
+         */
         reader.setDTDHandler(this);
         reader.setContentHandler(this);
 
@@ -1276,6 +1279,9 @@ public class Digester extends DefaultHandler2 {
             throws SAXException {
         boolean debug = log.isDebugEnabled();
 
+        if ("Host".equals(qName)){
+            System.out.println();
+        }
         if (saxLog.isDebugEnabled()) {
             saxLog.debug("startElement(" + namespaceURI + "," + localName + "," + qName + ")");
         }
@@ -2073,6 +2079,8 @@ public class Digester extends DefaultHandler2 {
      * Returns an attributes list which contains all the attributes
      * passed in, with any text of form "${xxx}" in an attribute value
      * replaced by the appropriate value from the system property.
+    *
+    * 返回一个属性列表，其中包含传入的所有属性，其中属性值中的任何形式为“{xxx}”的文本都由系统属性中的适当值替换。
      */
     private Attributes updateAttributes(Attributes list) {
 

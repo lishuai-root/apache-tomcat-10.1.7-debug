@@ -495,6 +495,7 @@ public final class StandardServer extends LifecycleMBeanBase implements Server {
 
     /**
      * Add a new Service to the set of defined Services.
+     * 向已定义的服务集添加一个新服务。
      *
      * @param service The Service to be added
      */

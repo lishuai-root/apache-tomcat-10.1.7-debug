@@ -77,6 +77,7 @@ import org.apache.tomcat.util.res.StringManager;
 /**
  * Startup event listener for a <b>Host</b> that configures the properties
  * of that Host, and the associated defined contexts.
+ * a <b>主机<b>的启动事件侦听器，用于配置该主机的属性和相关的已定义上下文。
  *
  * @author Craig R. McClanahan
  * @author Remy Maucherat
@@ -316,6 +317,7 @@ public class HostConfig implements LifecycleListener {
     /**
      * Add a serviced application to the list and indicates if the application
      * was already present in the list.
+     * 将服务应用程序添加到列表中，并指出该应用程序是否已经出现在列表中。
      *
      * @param name the context name
      *
@@ -413,9 +415,13 @@ public class HostConfig implements LifecycleListener {
     /**
      * Deploy applications for any directories or WAR files that are found
      * in our "application root" directory.
+     * 为“应用程序根”目录中的任何目录或WAR文件部署应用程序。
      */
     protected void deployApps() {
         // Migrate legacy Java EE apps from legacyAppBase
+        /**
+         * 从legacyAppBase迁移旧的Java EE应用程序
+         */
         migrateLegacyApps();
         File appBase = host.getAppBaseFile();
         File configBase = host.getConfigBaseFile();
@@ -1011,6 +1017,8 @@ public class HostConfig implements LifecycleListener {
 
     /**
      * Deploy exploded webapps.
+     * 部署分解的web应用。
+     *
      * @param appBase The base path for applications
      * @param files The exploded webapps that should be deployed
      */
@@ -1065,9 +1073,12 @@ public class HostConfig implements LifecycleListener {
 
     /**
      * Deploy exploded webapp.
+     * 部署已分解的web应用。
+     *
      * <p>
      * Note: It is expected that the caller has successfully added the app
      *       to servicedSet before calling this method.
+     * 注意:在调用此方法之前，希望调用者已经成功地将应用程序添加到servicedSet。
      *
      * @param cn The context name
      * @param dir The path to the root folder of the webapp
@@ -1628,6 +1639,7 @@ public class HostConfig implements LifecycleListener {
 
     /**
      * Process a "start" event for this Host.
+     * 处理此主机的“start”事件。
      */
     public void start() {
 

@@ -88,6 +88,9 @@ public class HostRuleSet implements RuleSet {
         digester.addSetProperties(prefix + "Host");
         digester.addRule(prefix + "Host",
                          new CopyParentClassLoaderRule());
+        /**
+         * 添加{@link HostConfig}类型的生命周期监听器，用于启动StandardHost时部署web项目
+         */
         digester.addRule(prefix + "Host",
                          new LifecycleListenerRule
                          ("org.apache.catalina.startup.HostConfig",

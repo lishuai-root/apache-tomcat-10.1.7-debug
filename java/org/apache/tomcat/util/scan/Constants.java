@@ -18,6 +18,7 @@ package org.apache.tomcat.util.scan;
 
 /**
  * String constants for the scan package.
+ * 扫描包的字符串常量。
  */
 public final class Constants {
 

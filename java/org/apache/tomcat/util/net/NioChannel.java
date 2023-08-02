@@ -31,6 +31,8 @@ import org.apache.tomcat.util.res.StringManager;
  * Base class for a SocketChannel wrapper used by the endpoint.
  * This way, logic for an SSL socket channel remains the same as for
  * a non SSL, making sure we don't need to code for any exception cases.
+ *
+ * 端点使用的SocketChannel包装器的基类。这样，SSL套接字通道的逻辑与非SSL通道的逻辑保持相同，确保我们不需要为任何异常情况编写代码。
  */
 public class NioChannel implements ByteChannel, ScatteringByteChannel, GatheringByteChannel {
 

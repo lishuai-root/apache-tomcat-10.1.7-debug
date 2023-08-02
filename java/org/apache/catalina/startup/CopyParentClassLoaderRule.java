@@ -29,6 +29,7 @@ import org.xml.sax.Attributes;
  * next-to-top item on the stack (which must be a <code>Container</code>)
  * to the top item on the stack (which must also be a
  * <code>Container</code>).</p>
+ * <p>将<code>parentClassLoader<code>属性从堆栈的倒数第二项(必须是<code>Container<code>)复制到堆栈的顶部项(也必须是<code>Container<code>)的规则。
  *
  * @author Craig R. McClanahan
  */

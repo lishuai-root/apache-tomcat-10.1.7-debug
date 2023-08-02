@@ -81,6 +81,7 @@ public abstract class AbstractEndpoint<S,U> {
 
         /**
          * Different types of socket states to react upon.
+         * 要对不同类型的套接字状态作出反应。
          */
         enum SocketState {
             // TODO Add a new state to the AsyncStateMachine and remove
@@ -91,6 +92,7 @@ public abstract class AbstractEndpoint<S,U> {
 
         /**
          * Process the provided socket with the given current status.
+         * 以给定的当前状态处理所提供的套接字。
          *
          * @param socket The socket to process
          * @param status The current socket status
@@ -182,11 +184,13 @@ public abstract class AbstractEndpoint<S,U> {
 
     /**
      * counter for nr of connections handled by an endpoint
+     * 一个端点处理的连接数的计数器
      */
     private volatile LimitLatch connectionLimitLatch = null;
 
     /**
      * Socket properties
+     * 套接字属性
      */
     protected final SocketProperties socketProperties = new SocketProperties();
     public SocketProperties getSocketProperties() {
@@ -195,6 +199,7 @@ public abstract class AbstractEndpoint<S,U> {
 
     /**
      * Thread used to accept new connections and pass them to worker threads.
+     * 用于接受新连接并将其传递给工作线程的线程。
      */
     protected Acceptor<U> acceptor;
 
@@ -625,6 +630,9 @@ public abstract class AbstractEndpoint<S,U> {
 
     public int getPortWithOffset() {
         // Zero is a special case and negative values are invalid
+        /**
+         * 零是一个特例，负值无效
+         */
         int port = getPort();
         if (port > 0) {
             return port + getPortOffset();
@@ -673,6 +681,7 @@ public abstract class AbstractEndpoint<S,U> {
      * Allows the server developer to specify the acceptCount (backlog) that
      * should be used for server sockets. By default, this value
      * is 100.
+     * 允许服务器开发人员指定应该用于服务器套接字的acceptCount (backlog)。缺省值是100。
      */
     private int acceptCount = 100;
     public void setAcceptCount(int acceptCount) { if (acceptCount > 0) {
@@ -685,6 +694,9 @@ public abstract class AbstractEndpoint<S,U> {
      * binds the port on {@link #init()} and unbinds it on {@link #destroy()}.
      * If set to <code>false</code> the port is bound on {@link #start()} and
      * unbound on {@link #stop()}.
+     * 控制端点何时绑定端口。
+     * <code>true<code>，默认在{@link #init()}上绑定端口，在{@link #destroy()}上取消绑定端口。
+     * 如果设置为<code>false<code>，则端口绑定在{@link #start()}上，而不绑定在{@link #stop()}上。
      */
     private boolean bindOnInit = true;
     public boolean getBindOnInit() { return bindOnInit; }
@@ -1246,6 +1258,7 @@ public abstract class AbstractEndpoint<S,U> {
      * within this class other than ensuring that bind/unbind are called in the
      * right place. It is expected that the calling code will maintain state and
      * prevent invalid state transitions.
+     * 注意:除了确保在正确的位置调用bind/unbind之外，在这个类中不维护状态或检查有效转换。预期调用代码将维持状态并防止无效的状态转换。
      */
 
     public abstract void bind() throws Exception;

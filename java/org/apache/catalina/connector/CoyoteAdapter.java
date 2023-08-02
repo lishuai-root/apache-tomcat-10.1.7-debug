@@ -80,6 +80,7 @@ public class CoyoteAdapter implements Adapter {
 
     /**
      * Construct a new CoyoteProcessor associated with the specified connector.
+     * 构造与指定连接器关联的新CoyoteProcessor。
      *
      * @param connector CoyoteConnector that owns this processor
      */
